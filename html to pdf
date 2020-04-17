@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>wkhtmltopdf</title>
+		<style>
+			body {
+				margin: 20px;
+			}
+			.page{
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+			code {
+				display: inline-block;
+				padding: 5px;
+				border-radius: 5px;
+				background-color: aquamarine;
+				background-color: #141414;
+				margin: 5px 0;
+				color: #ffffff;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="page">
+			<h1>wk &lt;html&gt; to pdf 활용</h1>
+			<a href="https://wkhtmltopdf.org/downloads.html" target="_blank" title="새창열림">wkhtmltopdf 다운로드</a>
+			<p>
+				윈도우 버전을 설치 하고 환경 변수를 추가 한다.
+				<a href="https://cezacx2.tistory.com/1173" target="_blank">환경 변수 추가 방법</a>
+			</p>
+			<h2>옵션</h2>
+			<ul>
+				<li>마진 : -T 21,-R 21,-B,-L (단위 mm)</li>
+				<li>@media type print 적용 : --print-media-type</li>
+				<li>확대축소 : --zoom 1.33</li>
+				<li>자동축소 : --disable-smart-shrinking</li>
+				<li><a href="https://wkhtmltopdf.org/usage/wkhtmltopdf.txt" target="_blank">전체 옵션</a></li>
+			</ul>
+			<br />
+            <h2>smple code</h2>
+            <p>
+                <img src="sample-img/2020-04-17-10-12-11.png" alt="">
+            </p>
+			<p>명령프롬프트 cmd (파일을 생성할수 있는 권한이 필요하기 때문에 <strong>관리자 권한</strong>으로 실행으로 실행)</p>
+			<code>
+				wkhtmltopdf.exe -T 21 -L 21 --print-media-type --disable-smart-shrinking https://www.google.co.kr google.pdf
+			</code>
+			<br />
+			<code>
+				wkhtmltopdf.exe -T 15 -L 15 --print-media-type --disable-smart-shrinking https://www.google.co.kr printsample.pdf
+			</code>
+			<h3>가로출력 smple code : -O Landscape</h3>
+			<code>
+				wkhtmltopdf.exe -O Landscape https://www.google.co.kr googleLandscape.pdf
+			</code>
+		</div>
+	</body>
+</html>
