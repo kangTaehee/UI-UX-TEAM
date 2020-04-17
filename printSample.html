@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>print sample</title>
+    <style>
+        
+        @page {
+            size: A4;
+            margin: 21mm;
+            margin-bottom: 0;
+        }
+        *{
+            box-sizing: border-box;
+        }
+        .page {
+            border: 21mm solid #eee;
+            margin: 20px auto;
+            width: 210mm;
+            height: 255mm;
+            position: relative;
+            page-break-after: always;
+        }
+        .page::before {
+            content: 'A4 용지';
+            position: absolute;
+            left: 0;
+            top: -13mm;
+            color: #757575;
+        }
+        @media print {
+            html,
+            body {
+                width: 168mm;
+                height: 255mm;
+            }
+            html.type-row,
+            body.type-row {
+                height: 168mm;
+                width: 255mm;
+            }
+            .page {
+                margin: 0 auto;
+                border: 0;
+                border-radius: initial;
+                width: initial;
+                min-height: initial;
+                box-shadow: initial;
+                background: initial;
+                page-break-after: always;
+            }
+            .page::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        내용
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rem iure necessitatibus facere delectus fuga itaque eveniet qui, doloribus animi molestiae quo, quae assumenda ratione officiis corporis neque tenetur. Amet, nesciunt!
+    </div>
+</body>
+</html>
