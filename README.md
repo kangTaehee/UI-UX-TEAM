@@ -6,6 +6,43 @@ https://chaewonkong.github.io/posts/11-useful-js-tips.html
 
 https://blog.naver.com/yshan1008/222205391849
 
+# css tip 
+https://www.telerik.com/blogs/10-time-saving-css-tips-i-learned-the-hard-way-when-using-sass
+```html
+<a class=c-social-button>
+ <span class=c-social-button--facebook>
+   페이스북
+ </span>
+</a>
+```
+```scss
+// 변수선언
+$c: ".c-social-button";
+
+#{$c} {
+	border: none;
+	border-radius: 4px;
+	color: $white;
+	user-select: none;
+	cursor: pointer;
+
+&--facebook {
+		background: #3b5998;
+	}
+
+	&--google {
+		background: #db4437;
+	}
+
+	&--messenger {
+		background: #0084ff;
+	}  
+
+	&--twitter {
+		background: #1da1f2;
+	}
+}
+```
 
 # 사파리에서는 사용자 action에 의해서만 popup이 열린다
 Could this be a popup blocker effect ?
