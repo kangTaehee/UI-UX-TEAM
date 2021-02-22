@@ -25,22 +25,16 @@ $c: ".c-social-button";
 	color: $white;
 	user-select: none;
 	cursor: pointer;
-
-&--facebook {
+ 
+ // 자식 요소
+ &--facebook {
 		background: #3b5998;
 	}
 
-	&--google {
-		background: #db4437;
-	}
-
-	&--messenger {
-		background: #0084ff;
-	}  
-
-	&--twitter {
-		background: #1da1f2;
-	}
+ //손자 이하 요소
+ #{$c}__ico{
+ ...
+ }
 }
 ```
 
