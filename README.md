@@ -7,6 +7,15 @@ https://chaewonkong.github.io/posts/11-useful-js-tips.html
 https://blog.naver.com/yshan1008/222205391849
 
 # css tip 
+* https://webdevstudios.com/2019/12/03/10-sass-tips/ 
+* 인수가 전달되지 않으면 불투명도를 위해 CSS에서 아무것도 컴파일되지 않지만 인수가 전달되면 CSS에서 컴파일됩니다. 
+```scss
+@mixin example($opacity: null) { 
+  background-color: #333;
+  color: white;
+  opacity: $opacity; 
+}
+```
 https://www.telerik.com/blogs/10-time-saving-css-tips-i-learned-the-hard-way-when-using-sass
 ```html
 <a class=c-social-button>
