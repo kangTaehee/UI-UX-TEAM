@@ -5,7 +5,44 @@ https://kangtaehee.github.io/UI-UX-TEAM/
 https://chaewonkong.github.io/posts/11-useful-js-tips.html
 
 https://blog.naver.com/yshan1008/222205391849
+# 재미있는 기사
+* `@supports`를 활용한 종횡비 https://css-tricks.com/aspect-ratio-boxes/
+```html
+<div style="--aspect-ratio:815/419;">
+</div>
 
+<div style="--aspect-ratio:16/9;">
+</div>
+
+<!-- even single value -->
+<div style="--aspect-ratio:1.4;">
+</div>
+```
+```scss
+[style*="--aspect-ratio"] > :first-child {
+  width: 100%;
+}
+[style*="--aspect-ratio"] > img {  
+  height: auto;
+} 
+@supports (--custom:property) {
+  [style*="--aspect-ratio"] {
+    position: relative;
+  }
+  [style*="--aspect-ratio"]::before {
+    content: "";
+    display: block;
+    padding-bottom: calc(100% / (var(--aspect-ratio)));
+  }  
+  [style*="--aspect-ratio"] > :first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }  
+}
+```
+* [automic css에 대한 고찰 CSS-in-JS](https://css-tricks.com/on-auto-generated-atomic-css)
 # css tip 
 * https://webdevstudios.com/2019/12/03/10-sass-tips/ 
 * 인수가 전달되지 않으면 불투명도를 위해 CSS에서 아무것도 컴파일되지 않지만 인수가 전달되면 CSS에서 컴파일됩니다. 
