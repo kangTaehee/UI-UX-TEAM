@@ -16,6 +16,31 @@ https://blog.naver.com/yshan1008/222205391849
   opacity: $opacity; 
 }
 ```
+* 튜플을 여러개를 사용하는 리스트형 함수 사용 https://gist.github.com/jareware/4738651
+```scss
+$buttonConfig: 'save' 50px, 'cancel' 50px, 'help' 100px; // TODO: move to _settings.scss
+
+@each $tuple in $buttonConfig {
+    .button-#{nth($tuple, 1)} {
+        width: nth($tuple, 2);
+    }
+}
+```
+* Variable arguments for functions/mixins `...` suffix
+```scss
+@mixin config-icon-colors($prefix, $colors...) {
+    @each $i in $colors {
+        .#{$prefix}#{nth($i, 1)} {
+            color: nth($i, 2);
+        }
+    }
+}
+@include config-icon-colors('icon-',
+    'save'   green,
+    'cancel' gray,
+    'delete' red
+);
+```
 https://www.telerik.com/blogs/10-time-saving-css-tips-i-learned-the-hard-way-when-using-sass
 ```html
 <a class=c-social-button>
