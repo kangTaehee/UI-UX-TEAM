@@ -25,7 +25,7 @@ function formAction(){
 }
 ```
 ```html
-<form action='/urls/...' onsubmit='return formAction()'>
+< form action='/urls/...' onsubmit='return formAction()'>
   <input type=text>
   <input type=submit value=submit>
 </form>
