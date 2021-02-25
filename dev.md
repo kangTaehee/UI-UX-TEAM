@@ -30,12 +30,14 @@ function formAction(){
 </form>
 ```
 ## 활용
-```
+```javascript
 function fnsubmit(_this){
   if(_this.type.value == 'edit'){
     _this.action=_this.editAction.value;
   }
 }
+```
+```html
 <form action='#abc' onsubmit="return fnsubmit(this)">
 <input type=hidden name=type value=edit>
 <input type=hidden name=editAction value='http://naver.com'>
