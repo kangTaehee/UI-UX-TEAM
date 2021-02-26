@@ -29,7 +29,7 @@ function formAction(){
   <input type=text>
   <input type=submit value=submit>
 </form>
-<code>
+</code>
 
 ## 활용
 ```javascript
