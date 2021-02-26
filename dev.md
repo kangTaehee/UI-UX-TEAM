@@ -24,12 +24,13 @@ function formAction(){
   }
 }
 ```
-```html
-< form action='/urls/...' onsubmit='return formAction()'>
+<code>
+<form action='/urls/...' onsubmit='return formAction()'>
   <input type=text>
   <input type=submit value=submit>
 </form>
-```
+<code>
+
 ## 활용
 ```javascript
 function fnsubmit(_this){
