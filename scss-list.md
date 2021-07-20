@@ -1,5 +1,7 @@
 # 재미있는 기사
-* `@supports`를 활용한 종횡비 https://css-tricks.com/aspect-ratio-boxes/
+
+[`@supports`를 활용한 종횡비](https://css-tricks.com/aspect-ratio-boxes/)
+
 ```html
 <div style="--aspect-ratio:815/419;">
 </div>
@@ -11,6 +13,7 @@
 <div style="--aspect-ratio:1.4;">
 </div>
 ```
+
 ```scss
 [style*="--aspect-ratio"] > :first-child {
   width: 100%;
@@ -35,10 +38,14 @@
   }  
 }
 ```
+
 * [automic css에 대한 고찰 CSS-in-JS](https://css-tricks.com/on-auto-generated-atomic-css)
-# css tip 
-* https://webdevstudios.com/2019/12/03/10-sass-tips/ 
-* 인수가 전달되지 않으면 불투명도를 위해 CSS에서 아무것도 컴파일되지 않지만 인수가 전달되면 CSS에서 컴파일됩니다. 
+
+## css tip
+
+* <https://webdevstudios.com/2019/12/03/10-sass-tips/>
+* 인수가 전달되지 않으면 불투명도를 위해 CSS에서 아무것도 컴파일되지 않지만 인수가 전달되면 CSS에서 컴파일됩니다.
+
 ```scss
 @mixin example($opacity: null) { 
   background-color: #333;
@@ -46,7 +53,9 @@
   opacity: $opacity; 
 }
 ```
-* 튜플을 여러개를 사용하는 리스트형 함수 사용 https://gist.github.com/jareware/4738651
+
+* [튜플을 여러개를 사용하는 리스트형 함수 사용](https://gist.github.com/jareware/4738651)
+
 ```scss
 $buttonConfig: 'save' 50px, 'cancel' 50px, 'help' 100px; // TODO: move to _settings.scss
 
@@ -56,7 +65,9 @@ $buttonConfig: 'save' 50px, 'cancel' 50px, 'help' 100px; // TODO: move to _setti
     }
 }
 ```
+
 * Variable arguments for functions/mixins `...` suffix
+
 ```scss
 @mixin config-icon-colors($prefix, $colors...) {
     @each $i in $colors {
@@ -71,7 +82,9 @@ $buttonConfig: 'save' 50px, 'cancel' 50px, 'help' 100px; // TODO: move to _setti
     'delete' red
 );
 ```
-https://www.telerik.com/blogs/10-time-saving-css-tips-i-learned-the-hard-way-when-using-sass
+
+[10가지 시간 절약 CSS 팁](https://www.telerik.com/blogs/10-time-saving-css-tips-i-learned-the-hard-way-when-using-sass)
+
 ```html
 <a class=c-social-button>
  <span class=c-social-button--facebook>
@@ -79,21 +92,22 @@ https://www.telerik.com/blogs/10-time-saving-css-tips-i-learned-the-hard-way-whe
  </span>
 </a>
 ```
+
 ```scss
 // 변수선언
 $c: ".c-social-button";
 
 #{$c} {
-	border: none;
-	border-radius: 4px;
-	color: $white;
-	user-select: none;
-	cursor: pointer;
+ border: none;
+ border-radius: 4px;
+ color: $white;
+ user-select: none;
+ cursor: pointer;
  
  // 자식 요소
  &--facebook {
-		background: #3b5998;
-	}
+  background: #3b5998;
+ }
 
  //손자 이하 요소
  #{$c}__ico{
