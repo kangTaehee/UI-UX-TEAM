@@ -39,6 +39,8 @@
 ```css
 font-size: calc(1.5rem + 3vw);
 font-size: calc(20px + -3 * (100vw - 576px) / 624)
+75 = (1200px - 750px) / 6
+calc(26px - (6px - ((100vw - 750px) / 75)))
 ```
 
 ## 브라우저 지원
