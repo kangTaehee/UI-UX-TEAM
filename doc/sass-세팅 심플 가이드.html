@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>sass 적용 방안</title>
+<link rel="stylesheet" href="http://bootstrapk.com/dist/css/bootstrap.min.css">
+<style>
+body{
+	font-size:20px;
+	line-height: 1.3;
+	color:rgb(102,102,102);
+font-family: "애플 SD 산돌고딕 Neo", "Apple SD Gothic Neo", 나눔고딕, NanumGothic, "Nanum Gothic", "맑은 고딕", "Malgun Gothic", 돋움, dotum, AppleGothic, sans-serif;
+
+}
+pre{background-color:#000;border-radius:10px;color:#fff;padding:10px;}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+	<h1>node.js + gulp + sass + watch</h1>
+<div class="panel panel-default">
+  <div class="panel-heading"><h2>node.js 설치</h2></div>
+  <div class="panel-body">
+    <ol>
+		<li><a target="_blank" title="새창열림" href="https://nodejs.org/en/">https://nodejs.org/en/</a></li>
+		<li>[Recommended For Most Users 버튼] 다운로드 & 실행</li>
+		<li>피니쉬가 나올때까지 다음 ~ 다음 ~ 다음</li>
+		<li>커맨트창(WIN+R cmd) > <pre>node --version</pre></li>
+		<li>vx.xx.x 라고 나오면 설치완료</li>
+	</ol>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><h2>gulp</h2></h3>
+  </div>
+  <div class="panel-body">
+    <p>상세 : <a target="_blank" title="새창열림" href="http://programmingsummaries.tistory.com/356">http://programmingsummaries.tistory.com/356</a></p>
+	<h3>요약</h3>
+	<ol>
+		<li>파일 탐색기 > 프로젝트경로.../static 폴더 쉬프트 + 우클릭  > 여기서 명령창 열기</li>
+		<li>
+			<p>...\webapp\static\ 상태에서 <pre>npm init</pre></p>
+			<p>정보는 이름정도만 엔터 엔터 엔터 ~</p>
+			<p>is this ok? 나오면 <pre>yes</pre></p>
+		</li>
+		<li>실행 : 걸프 최초 설치시(시스템에 설치됨)에만 <pre>npm install gulp -g</pre> </li>
+		<li>실행<pre>npm install gulp --save-dev</pre></li>
+		<li>실행<pre>npm install browser-sync gulp-autoprefixer gulp-concat gulp-livereload gulp-minify-html gulp-sass gulp-sourcemaps gulp-uglify gulp-webserver --save-dev</pre></li>
+		<li>파일생성 gulpfile.js</li>
+		<li>복사하여 gulpfile.js 저장
+<textarea name="" id="" cols="30" rows="10" style="width:100%">var gulp = require('gulp');
+var sourcemaps = require('gulp-sourcemaps');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var minifyhtml = require('gulp-minify-html');
+var sass = require('gulp-sass');
+var livereload = require('gulp-livereload');
+var paths = {
+  js: '/js/*.js',
+  scss: '/scss/*.scss',
+  html: '/**/*.html'
+};
+var sassOptionsCompact = {errLogToConsole: true, outputStyle: 'compact'};
+var sassOptionsExpanded = {errLogToConsole: true, outputStyle: 'expanded'};
+var browserSync = require('browser-sync').create();
+gulp.task('serverbrowserSync', function () {
+  return browserSync.init({
+		  server: {
+			  baseDir: '../',
+			  index: "static/guide/bos/dashboard.html"
+		  }
+	  });
+});
+gulp.task('commons-sass', function () {
+  return gulp.src('commons/common.scss')
+	.pipe(sass(sassOptionsCompact).on('error', sass.logError))
+	.pipe(gulp.dest('commons/'));
+	console.log('file change');
+	done();
+});
+gulp.task('default',
+  [
+  'bos-compile-sass',
+  'site1-compile-sass',
+  'watch'
+  ]);
+
+var bos = 'bos';
+gulp.task('bos-compile-sass', function () {
+  return gulp.src(bos+paths.scss)
+	.pipe(sourcemaps.init({loadMaps: true}))
+	.pipe(sass(sassOptionsExpanded).on('error', sass.logError))
+	.pipe(sourcemaps.write())
+	.pipe(gulp.dest(bos+'/css/'));
+});
+
+var site1 = 'ucms';
+gulp.task('site1-compile-sass', function () {
+  return gulp.src(site1+path.scss)
+	.pipe(sourcemaps.init({loadMaps: true}))
+	.pipe(sass().on('error', sass.logError))
+	.pipe(sourcemaps.write())
+	.pipe(gulp.dest(site1+'/css/'));
+	console.log('site1 change');
+});
+
+var autoprefixer = require('gulp-autoprefixer');
+gulp.task('autoPrefixer', function () {
+	return gulp.src(['bos/css/*.css'])
+		.pipe(autoprefixer({
+			browsers: ['last 2 versions'],
+			cascade: true
+		}))
+		.pipe(gulp.dest('bos/css'));
+});
+
+gulp.task('watch', function () {
+	gulp.watch([boscss], ['bos-compile-sass']);
+	gulp.watch([site1], ['site1-compile-sass']);
+	//gulp.watch(['commons/common.scss'], ['commons-sass']);
+});</textarea>
+		</li>
+		<li>command창 ...\webapp\static\ 상태에서 실행<pre>gulp</pre></li>
+	</ol>
+  </div>
+</div>
+
+	
+	
+
+<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">gulpfile 설명</h3>
+		</div>
+		<div class="panel-body">
+			<ol>
+					<li>
+						<dl>
+							<dt>폴더구조</dt>
+							<dd>
+								<img src="data:image/png;base64,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" alt="">
+								scss 폴더의 파일을 css폴더로 컴파일
+							</dd>
+						</dl>
+					</li>
+					<li>
+						사이트가 여러개인경우 gulpfile.js에서 각 "site1"을 복사하여 site2로 추가한다.
+					</li>
+				</ol>
+		</div>
+	</div>
+	
+	
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">sass</h3>
+	</div>
+	<div class="panel-body">
+		<ol>
+		<li>_(언더바가 붙은 파일)은 컴파일 되지 않는다.</li>
+		<li>콜솔창을 닫으면 watch가 중단되고 컴파일이 되지 않는다.</li>
+		<li>콘솔창에서 에러가 뜨면은 css파일이 정상적으로 생성 되지 않는다.</li>
+		<li>파일명.sass 과 scss 차이점은 구문 작성 방법 차이 우리는 scss를 사용하는것으로 한다. <a href="http://jrabbit.tistory.com/79" target="_blank" title="새창열림">sass와 scss차이점</a></li>
+		<li><a href="http://wit.nts-corp.com/2015/01/09/2936" target="_blank" title="새창열림">Sass(CSS Preprocessor) 기초</a></li>
+		<li><a href="http://www.sassmeister.com/" target="_blank" title="새창열림">sass web compiler</a></li>
+	</ol>
+	</div>
+</div>
+
+</div>
+</body>
+</html>
