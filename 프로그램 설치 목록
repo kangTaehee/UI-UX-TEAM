@@ -14,3 +14,4 @@ choco install python --version 3.10.2 -y
 choco install nodejs.install --version 17.4.0 -y
 choco install gulp-cli --version 2.3.0.20201126 -y
 choco install nodejs --version 17.4.0 -y
+choco install treesizefree.portable
