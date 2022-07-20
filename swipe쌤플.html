@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.2.3/swiper-bundle.css">
+	<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.1.0/css/line-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script><!--  버젼 5부터 ie 지원 안됨 -->
+	<!-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> -->
+	<title>swipe 쌤플</title>
+	<style>
+		img:focus {outline: 1px solid #000;}
+		:focus {outline: 2px solid #FFBA00;outline-offset: -2px;}
+		img {vertical-align: middle;}
+		* {margin: 0;padding: 0;border: 0;list-style: none;}
+		.sr-only {position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);border:0;}
+		body {padding: 20px;}
+		h1 {font-size: 24px;}
+		h2 {font-size: 18px;margin: 50px 0 10px;}
+		h2:first-child {margin: 20px 0 10px;}
+		button {cursor: pointer;}
+		.page a {opacity: 1;background: transparent;}
+		.page a.swiper-pagination-bullet-active {background: #007aff;border: 1px solid #007aff;color: #fff;}
+		 /*.page a:focus {outline: 1px solid #FFBA00;} */
+		.visual-set {position: relative;max-width: 700px;width: 100%;border: 1px solid #eee;overflow: hidden;display: block;}
+		.visual__list a {display: block;padding-top: 40%;height: 1px;}
+		.swiper-slide {
+			text-align: center; /* Center slide text vertically */ display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; display: flex; -webkit-box-pack: center; -ms-flex-pack: center; -webkit-justify-content: center; justify-content: center; -webkit-box-align: center; -ms-flex-align: center; -webkit-align-items: center; align-items: center;
+		}
+		.visual-navigation {position: absolute;bottom: 0;left: 0;width: 100%;height: 30px;text-align: center;z-index: 9;}
+		.visual-navigation .page {display: inline-block;vertical-align: top;width: auto;}
+		.visual-navigation button {display: inline-block;vertical-align: top;width: 20px;height: 20px;}
+		.visual-navigation button.visual-stop::before {content: "\f04c";font-family: "Line Awesome Free";font-weight: 900;font-size: 16px;}
+		.visual-navigation button.visual-play::before {content: "\f04b";font-family: "Line Awesome Free";font-weight: 900;font-size: 16px;}
+		.swiper-pagination-bullet {display: inline-block;width: 10px;height: 10px;border: 1px solid #eee;border-radius: 50%;margin: 0 3PX;}
+		.swiper-pagination-bullet-active {}
+		.visual-ctrl button,
+		.gallery-ctrl button {display: block;position: absolute;top: 50%;width: 50px;height: 50px;;margin-top: -25px;z-index: 9;border: 1px solid #eee;background: #eee;}
+		.visual-ctrl .visual-prev,
+		.gallery-ctrl .gallery-prev {left: 0;}
+		.visual-ctrl .visual-next,
+		.gallery-ctrl .gallery-next {right: 0;}
+		.swiper-pagination-total {font-weight: 600;}
+		.gallery-set {overflow: hidden;display: block;position: relative;max-width: 1200px;width: 100%;}
+		.gallery-set .gallery__list a {display: block;width: 100%;}
+		.gallery-set .gallery__list .img {display: block;padding-top: 80%;height: 1px;border: 1px solid #eee;}
+		.gallery-set2 {overflow: hidden;display: block;max-width: 700px;width: 100%;}
+		.gallery-set2 .gallery__list {padding-bottom: 8px;}
+		.gallery-set2 .gallery__list .img {display: block;width: 100%;padding-top: 40%;height: 1px;border: 1px solid #eee;background-size: cover;background-position: center;}
+		.gallery-set2 .gallery-thumbs {position: relative;}
+		.gallery-set2 .gallery-thumbs a {display: block;width: 100%;height: 100%;}        
+		.gallery-set2 .gallery-thumbs .img {width: 100%;display: block;padding-top: 80%;height: 1px;border: 1px solid #eee;background-size: cover;background-position: center;}
+		.visual-prev:before, .gallery-prev::before, .gallery-prev:before {content: "\f104";font-size: 32px;font-family: "Line Awesome Free";font-weight: 900;}
+		.visual-next:before, .gallery-next:before, .gallery-next:before {content: "\f105";font-size: 32px;font-family: "Line Awesome Free";font-weight: 900;}
+		.tab-wrapper { width: 100%;max-width: 900px;}
+		.tab-wrapper a {float: left;width: 50%;color: #000;}
+		.tab-contents {clear: both; width: 100%;max-width: 700px; height: 100%;display: none; overflow: hidden;position: relative;}
+		.tab-contents.tab01 { display: block; }
+		.tab-contents .swiper-slide {height: 300px;}
+		.swiper-ctrl .swiper-pagination {position: static;width: auto;display: inline-block;}
+		.swiper-ctrl {position: absolute;bottom: 20px;left: 0;width: 100%;z-index: 9;text-align: center;}
+		.swiper-ctrl button {width: 20px;height: 20px;border: 1px solid #eee;background: #eee;}
+		.swiper-ctrl .button-prev::before {content: "\f104";font-family: "Line Awesome Free";font-weight: 900;font-size: 16px;}
+		.swiper-ctrl .button-next::before {content: "\f105";font-family: "Line Awesome Free";font-weight: 900;font-size: 16px;}
+		.tab-wrapper { text-align: center; }
+		.tab-wrapper .tab { cursor: pointer; font-size: 20px; background: #eee;padding: 10px 0;}
+		.tab-wrapper .tab.on {font-weight: 600;background: #007aff;color: #fff;}
+		.swiper-notification {display: none;}
+		.swiper-slide:nth-child(1) {background: #9fa04b;}
+		.swiper-slide:nth-child(2) {background: #60c1fd;}
+		.swiper-slide:nth-child(3) {background: #b7cc7d;}
+		.swiper-slide:nth-child(4) {background: #f1ba7f;}
+		.swiper-slide:nth-child(5) {background: #7da8cc;}
+		.swiper-slide:nth-child(6) {background: #96cc7d;}
+		.swiper-slide:nth-child(7) {background: #cc7dae;}
+		.swiper-slide:nth-child(8) {background: #9eb75c;}
+		.swiper-slide:nth-child(9) {background: #0079c5;}
+	</style>
+</head>
+<body>
+	<h1>swiper 쌤플</h1>
+	<h2>visual-set</h2>
+	<div class="visual-set">
+		<div class="visual-ctrl">
+			<button type="button" class="visual-prev"><span class="sr-only">이전 비주얼 보기</span></button>
+			<button type="button" class="visual-next"><span class="sr-only">다음 비주얼 보기</span></button>			
+		</div>
+		<div class="visual__list swiper-wrapper">
+			<a href="" class="swiper-slide"><span class="">이미지1</span></a>
+			<a href="" class="swiper-slide"><span class="">이미지2</span></a>
+			<a href="" class="swiper-slide"><span class="">이미지3</span></a>
+			<a href="" class="swiper-slide"><span class="">이미지4</span></a>
+			<a href="" class="swiper-slide"><span class="">이미지5</span></a>
+			<a href="" class="swiper-slide"><span class="">이미지6</span></a>
+			<a href="" class="swiper-slide"><span class="">이미지7</span></a>
+		</div>		
+		<div class="visual-navigation">
+			<div class="page"></div>
+			<button type="button" class="visual-stop"><span class="sr-only">비주얼 일시정지</span></button>
+			<button type="button" class="visual-play" style="display:none"><span class="sr-only">비주얼 재생</span></button>
+		</div>
+	</div>
+	<script>
+		let thisSlide, // Swiper Slide
+			focusOut, // 슬라이드 키보드 접근 확인
+			slideFocus = {}, // 슬라이드 내부 탭 포커스 가능한 요소 저장
+			swiperWrapper = document.querySelector('.swiper-wrapper'),
+			slideAll, // 전체 슬라이드 저장
+			slideLength, // 슬라이드 갯수
+			onClickNavigation, // 슬라이드 이전/다음 버튼으로 슬라이드 전환 확인
+			navigations = {}, // 슬라이드 이전 다음 버튼
+			prevEnter; // 이전 버튼 키보드 엔터로 접근 확인
+			const slideKeyDownEvt = (e, idx) => {
+			// back tab : 첫 번째 슬라이드 포커스 시
+			if (e.key == 'Tab' && e.shiftKey && thisSlide.activeIndex === 0) {
+				focusOut = false;
+				// back tab : 그 외 슬라이드 포커스 시
+			} else if (e.key == 'Tab' && e.shiftKey && e.target === slideFocus[idx][0]) {
+				e.preventDefault();
+				focusOut = true;
+				slideAll[thisSlide.activeIndex - 1].setAttribute('tabindex', '0');
+				thisSlide.slideTo(thisSlide.activeIndex - 1);
+				removeSlideTabindex();
+			} else if (e.key == 'Tab' && !e.shiftKey && e.target === slideFocus[idx][slideFocus[idx].length - 1]) {
+				if (idx >= slideLength) {
+				// tab : 마지막 슬라이드 내 마지막 요소 포커스 시
+				focusOut = false;
+				} else {
+				// tab : 그 외 슬라이드 내 마지막 요소 포커스 시
+				e.preventDefault();
+				if (slideAll[thisSlide.activeIndex + 1] <= slideLength) slideAll[thisSlide.activeIndex + 1].setAttribute('tabindex', '0');
+					focusOut = true;
+					thisSlide.slideTo(thisSlide.activeIndex + 1);
+					removeSlideTabindex();
+					}
+				};
+			};
+			// 슬라이드 내부 클릭 요소 tabindex 값 삭제
+			// const removeSlideTabindex = () => {
+			// 	slideAll.forEach((element, i) => {
+			// 		let focusTarget = Array.prototype.slice.call(element.querySelectorAll('a, button, input, [role="button"], textarea, select, [tabindex="0"]'));
+			// 		focusTarget.forEach((el, idx) => {
+			// 			if (el.closest('.swiper-slide') === slideAll[thisSlide.activeIndex]){
+			// 				el.removeAttribute('tabindex');
+			// 			}
+			// 		});
+			// 	});
+			// };
+			const slideFocusAct = (e, idx, next) => {
+			if (onClickNavigation) {
+				if (e.key == 'Enter' && !next) prevEnter = true;
+				else if (e.key == 'Tab') {
+				if (!e.shiftKey && next) {
+					e.preventDefault();
+					slideFocus[idx][0].setAttribute('tabindex', '0');
+					slideFocus[idx][0].focus();
+					removeSlideTabindex();
+					onClickNavigation = false;
+				} else if (prevEnter && !next) {
+					if (idx === 0) idx = 1;
+					slideFocus[idx - 1][0].setAttribute('tabindex', '0');
+					slideFocus[idx - 1][0].focus();
+					removeSlideTabindex();
+					onClickNavigation = false;
+					prevEnter = false;
+				};
+				};
+			};
+		};
+		var visual = new Swiper(".visual-set", {
+			slidesPerView: 1,	// 보여지는 슬라이드 갯수
+			spaceBetween : 0,	// 전체적인 슬라이드의 왼쪽에 0px 공백을 준다.
+			loop: false,	// 슬라이드 반복 여부 (무한 돌릴 경우 웹접근성 위배) ** pagination 버튼 type 이 bullets일 경우 false **
+			//loopAdditionalSlides : 1,	// 슬라이드 반복 시 마지막 슬라이드에서 다음 슬라이드가 보여지지 않는 현상 수정	
+			//loopedSlides: 1,
+			//loopedSlides: swiperNum.length, //loop 시 파라미터 duplicate 개수 - 정적으로 숫자 4 표현 가능
+			pagination : true,	//pager 여부
+			autoplay : {  // 자동 슬라이드 설정 , 비 활성화 시 false
+				delay : 5000,  //시간 설정
+				disableOnInteraction : false,  //true 설정시 쓸어 넘기거나 버튼 클릭 시 자동 슬라이드 정지.
+			},
+			navigation: {	// 버튼 사용자 지정
+				prevEl: ".visual-prev",
+				nextEl: ".visual-next",
+			},
+			effect: 'false', //슬라이드 이미지가 쌓이는 느낌
+			pagination: {
+				el: ".visual-navigation .page",
+				clickable: true,	//버튼 클릭 여부
+				type : 'bullets', //페이징 타입 설정(종류: bullets, fraction, progress, progressbar)
+				renderBullet : function (index, className) {  // className이 기본값이 들어가게 필수 설정
+					return '<a href="#" class="' + className + '"> <span class="sr-only">' + (index + 1) + '번째 비주얼</span></a>'
+				},
+				renderFraction: function (currentClass, totalClass) { // type이 fraction일 때 사용
+					return '<span class="' + currentClass + '"></span> / ' +
+						'<span class="' + totalClass + '"></span>';
+				}
+			},
+			observer: true, //처음에 보이지 않는 display: none 상태인 요소 포커스 오류 정정
+			observeParents: true,
+			//watchOverflow : true,	//슬라이드가 1개 일 때 pager, button 숨김 여부 설정
+			on: {
+				init: function (v) {
+					var item = $('.visual-set')
+					item.find('.swiper-slide-active').attr('tabindex',0).siblings().attr('tabindex',-1)
+				},
+				slideChangeTransitionEnd:function(){
+					var item = $('.visual-set')
+					item.find('.swiper-slide-active').attr('tabindex',0).siblings().attr('tabindex',-1)
+				}
+			},
+		});
+		$('.visual-stop').on('click', function () {
+			$(this).hide().next().show().focus()
+			visual.autoplay.stop();
+		});
+		$('.visual-play').on('click', function () {
+			$(this).hide().prev().show().focus()
+			visual.autoplay.start();
+		});
+	</script>
+	<h2>gallery</h2>
+	<div class="gallery-set swiper-container">
+		<div class="gallery-ctrl">
+			<button type="button" class="gallery-prev"><span class="sr-only">이전 갤러리 보기</span></button>
+			<button type="button" class="gallery-next"><span class="sr-only">다음 갤러리 보기</span></button>			
+		</div>
+		<ul class="gallery__list swiper-wrapper">
+			<li class="swiper-slide">
+				<a href="">
+					<span class="img" style="background-image: url('');">
+						<span class="sr-only">이미지1</span>
+					</span>
+				</a>
+			</li>
+			<li class="swiper-slide">
+				<a href="">
+					<span class="img" style="background-image: url('');">
+						<span class="sr-only">이미지2</span>
+					</span>
+				</a>
+			</li>
+			<li class="swiper-slide">
+				<a href="">
+					<span class="img" style="background-image: url('');">
+						<span class="sr-only">이미지3</span>
+					</span>
+				</a>
+			</li>
+			<li class="swiper-slide">
+				<a href="">
+					<span class="img" style="background-image: url('');">
+						<span class="sr-only">이미지4</span>
+					</span>
+				</a>
+			</li>
+		</ul>		
+	</div>
+	<script>
+		var gallery = new Swiper(".gallery-set", {
+			init: false, 
+			slidesPerView: 3,	// 보여지는 슬라이드 갯수
+			spaceBetween: 20,	// 마진값
+			freeMode: true,
+			loop: false,	// 슬라이드 반복 여부			
+			loopAdditionalSlides : 1,  // 슬라이드 반복 시 마지막 슬라이드에서 다음 슬라이드가 보여지지 않는 현상 수정
+			touchEventsTarget: 'wrapper',
+			pagination : true,	//pager 여부
+			//autoplay : {  // 자동 슬라이드 설정 , 비 활성화 시 false
+			//	delay : 5000,  //시간 설정
+			//	disableOnInteraction : false,  // false로 설정하면 스와이프 후 자동 재생이 비활성화 되지 않음
+			//},			
+			navigation: {	// 버튼 사용자 지정
+				prevEl: ".gallery-set .gallery-prev",
+				nextEl: ".gallery-set .gallery-next",
+			},
+			breakpointsInverse: true,
+			breakpoints: {
+				320: {
+					slidesPerView: 1,
+					spaceBetween: 0,
+				},
+				768: {
+					slidesPerView: 2,
+					spaceBetween: 10,
+				},
+				1024: {
+					slidesPerView: 3,
+					spaceBetween: 20,
+				},
+			},
+			observer: true, //처음에 보이지 않는 display: none 상태인 요소 포커스 오류 정정
+			observeParents: true,
+		});	
+		gallery.init();//초기화	
+	</script>
+	<h2>gallery2</h2>
+	<div class="gallery-set2">
+		<div class="gallery__list swiper-container">			
+			<ul class="swiper-wrapper">
+				<li class="swiper-slide">
+					<span class="img" style="background-image: url('https://swiperjs.com/demos/images/nature-1.jpg');">
+						<span class="sr-only">이미지1</span>
+					</span>
+				</li>
+				<li class="swiper-slide">
+					<span class="img" style="background-image: url('https://swiperjs.com/demos/images/nature-2.jpg');">
+						<span class="sr-only">이미지2</span>
+					</span>
+				</li>
+				<li class="swiper-slide">
+					<span class="img" style="background-image: url('https://swiperjs.com/demos/images/nature-3.jpg');">
+						<span class="sr-only">이미지3</span>
+					</span>
+				</li>
+				<li class="swiper-slide">
+					<span class="img" style="background-image: url('https://swiperjs.com/demos/images/nature-4.jpg');">
+						<span class="sr-only">이미지4</span>
+					</span>
+				</li>
+				<li class="swiper-slide">
+					<span class="img" style="background-image: url('https://swiperjs.com/demos/images/nature-5.jpg');">
+						<span class="sr-only">이미지5</span>
+					</span>
+				</li>
+			</ul>			
+		</div>		
+		<div class="gallery-thumbs">
+			<div class="gallery-ctrl">
+				<button type="button" class="gallery-prev"><span class="sr-only">이전 갤러리 보기</span></button>
+				<button type="button" class="gallery-next"><span class="sr-only">다음 갤러리 보기</span></button>			
+			</div>
+			<ul class="swiper-wrapper">
+				<li class="swiper-slide">
+					<a href="javascript:void(0)">
+						<span class="img" style="background-image: url('https://swiperjs.com/demos/images/nature-1.jpg');">
+							<span class="sr-only">이미지1</span>
+						</span>
+					</a>
+				</li>
+				<li class="swiper-slide">
+					<a href="javascript:void(0)">
+						<span class="img" style="background-image: url('https://swiperjs.com/demos/images/nature-2.jpg');">
+							<span class="sr-only">이미지2</span>
+						</span>
+					</a>
+				</li>
+				<li class="swiper-slide">
+					<a href="javascript:void(0)">
+						<span class="img" style="background-image: url('https://swiperjs.com/demos/images/nature-3.jpg');">
+							<span class="sr-only">이미지3</span>
+						</span>
+					</a>
+				</li>
+				<li class="swiper-slide">
+					<a href="javascript:void(0)">
+						<span class="img" style="background-image: url('https://swiperjs.com/demos/images/nature-4.jpg');">
+							<span class="sr-only">이미지4</span>
+						</span>
+					</a>
+				</li>
+				<li class="swiper-slide">
+					<a href="javascript:void(0)">
+						<span class="img" style="background-image: url('https://swiperjs.com/demos/images/nature-5.jpg');">
+							<span class="sr-only">이미지5</span>
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script>
+		var galleryThumbs = new Swiper(".gallery-thumbs", {
+			spaceBetween: 10,
+			slidesPerView: 4,
+			loop: false,	// 슬라이드 반복 여부
+			loopAdditionalSlides : 1,  // 슬라이드 반복 시 마지막 슬라이드에서 다음 슬라이드가 보여지지 않는 현상 수정
+			//freeMode: true,
+			//watchSlidesProgress: true,            
+			touchEventsTarget: 'wrapper',
+			//freeMode: true, 
+			//observer: true, //처음에 보이지 않는 display: none 상태인 요소 포커스 오류 정정
+			//observeParents: true,
+			pagination : true,	//pager 여부
+			// autoplay : {
+			// 	delay : 5000,
+			// 	disableOnInteraction : true,
+			// },
+			navigation: {	// 버튼 사용자 지정
+				prevEl: ".gallery-set2 .gallery-prev",
+				nextEl: ".gallery-set2 .gallery-next",				
+			},					
+		});
+		var galleryList = new Swiper(".gallery-set2 .gallery__list", {
+			slidesPerView: 1,	// 보여지는 슬라이드 갯수
+			spaceBetween: 0,	// 마진값
+			//loop: true,	// 슬라이드 반복 여부
+			touchRatio: 0,  //드래그 금지
+			freeMode: true, 
+			thumbs: {
+				swiper: galleryThumbs,
+			},
+		});
+		galleryThumbs.init();//초기화		
+	</script>
+	<h2>tab + 같은 클래스 여러개 사용</h2>
+	<div class="tab-wrapper">
+		<a href="javascript:void(0)" class="tab on" rel="tab01" title="선택됨">tab1</a>
+		<a href="javascript:void(0)" class="tab" rel="tab02">tab2</a>
+	</div>
+	<div class="tab-contents tab01 slider">
+		<div class="swiper-container inner">		
+			<div class="ctrl">
+				<div class="swiper-pagination"></div>
+				<button type="button" class="swiper-button-prev"><span class="sr-only">이전 tab1 보기</span></button>
+				<button type="button" class="swiper-button-next"><span class="sr-only">다음 tab1 보기</span></button>
+			</div>
+			<ul class="swiper-wrapper">
+				<li class="swiper-slide">Slide 1_1</li>
+				<li class="swiper-slide">Slide 1_2</li>
+				<li class="swiper-slide">Slide 1_3</li>
+				<li class="swiper-slide">Slide 1_4</li>
+			</ul>           
+		</div>
+	</div>
+	<div class="tab-contents tab02 slider">
+		<div class="swiper-container inner">			
+			<div class="ctrl">
+				<div class="swiper-pagination"></div>
+				<button type="button" class="swiper-button-prev"><span class="sr-only">이전 tab2 보기</span></button>
+				<button type="button" class="swiper-button-next"><span class="sr-only">다음 tab2 보기</span></button>
+			</div>
+			<ul class="swiper-wrapper">
+				<li class="swiper-slide">Slide 2_1</li>
+				<li class="swiper-slide">Slide 2_2</li>
+				<li class="swiper-slide">Slide 2_3</li>
+				<li class="swiper-slide">Slide 2_4</li>
+			</ul>           
+		</div>
+	</div>
+	<script>
+	$(document).ready(function () {
+		slider();
+	})
+	function slider(){
+		$(".slider").each(function(index){
+			var $this = $(this);
+			var winW = window.innerWidth; //화면 가로사이즈
+			var swiper = undefined;
+			var viewNum = ''; //슬라이드 개수 (옵션)
+			var loopChk = ''; //무한반복 체크
+			var slideNum =  $this.find('.slider .swiper-slide').length //슬라이드 총 개수
+			var slideInx = 0; //현재 슬라이드 index
+			//디바이스 체크
+			var winWChk = '';
+			$(window).on('load resize', function (){
+				winW = window.innerWidth;
+				if(winWChk != 'mo' && winW <= 768){ //모바일 버전으로 전환할 때
+					sliderAct();
+					winWChk = 'mo';
+				}
+				if(winWChk != 'pc' && winW >= 769){ //PC 버전으로 전환할 때
+					sliderAct();
+					winWChk = 'pc';
+				}
+			})
+			function sliderAct(){
+				//슬라이드 인덱스 클래스 추가
+				$this.addClass("slider-" + index);
+				//슬라이드 초기화 
+				if (swiper != undefined){ 
+					swiper.destroy();
+					swiper = undefined;
+				}
+				//slidesPerView 옵션 설정
+				if (winW > 768){ //PC 버전
+					viewNum = 3;
+				}else{ //mobile 버전
+					viewNum = 2;
+				}
+				//loop 옵션 체크
+				if (slideNum > viewNum){
+					loopChk = true;
+				}else{ 
+					loopChk = false;
+				}
+				swiper = new Swiper('.slider-' + index + ' .inner', {
+					slidesPerView: viewNum,
+					initialSlide :slideInx,
+					spaceBetween: 10,
+					slidesPerGroup: 1,
+					loop: loopChk,
+					navigation: {
+						nextEl: $('.slider-' + index).find('.swiper-button-next'),
+						prevEl: $('.slider-' + index).find('.swiper-button-prev'),
+					},
+					on: {
+						activeIndexChange: function () {
+							slideInx = this.realIndex; //현재 슬라이드 index 갱신
+						}
+					},
+					observer: true,	//swiper를 초기화
+					observeParents: true,
+				});
+			}        
+		});
+	}
+	$(".tab-wrapper .tab").on('click', function () {
+		$(".tab-wrapper .tab").removeClass("on").removeAttr("title");
+		$(this).addClass("on").attr("title", "선택됨")
+		$(".tab-contents").hide();
+		let tabid = $(this).attr("rel");
+		$("." + tabid).fadeIn();
+	});
+	</script>
+	<style>
+	.slider {overflow: hidden;position: relative;max-width: 900px;margin: 25px 0;}
+	.slider .inner {overflow: hidden;margin: 0 50px;}
+	.slide_list > li {width: 20%;height: 150px;background: #ade9ff;font-size: 20px;line-height: 150px;text-align: center;}
+	.slider .swiper-button-prev,
+	.slider .swiper-button-next {position: absolute;top: 50%;width: 36px;height: 36px;margin-top: -18px;background:url('https://i.ibb.co/jHRD6th/pngwing-com.png') center center no-repeat;background-size: cover;}
+	.slider .swiper-button-prev {left: 0;transform: rotateY(180deg) translate(0,-50%);}
+	.slider .swiper-button-next {right:0;transform: translate(0,-50%);}
+	.swiper-button-prev:after, .swiper-rtl .swiper-button-next:after,
+	.swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {display: none;}
+	</style>
+</body>
+</html>

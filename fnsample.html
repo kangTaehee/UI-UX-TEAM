@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<script>
+			var Slick = window.Slick || {};
+
+			Slick = (function () {
+				var instanceUid = 0;
+
+				function Slick(element, settings) {
+					var _ = this,
+						dataSettings;
+
+					_.registerBreakpoints();
+					_.init(true);
+				}
+
+				return Slick;
+			})();
+			Slick.prototype.activateADA = function () {
+				var _ = this;
+
+				_.$slideTrack
+					.find('.slick-active')
+					.attr({
+						'aria-hidden': 'false',
+					})
+					.find('a, input, button, select')
+					.attr({
+						tabindex: '0',
+					});
+			};
+
+			function a (arguments) {
+				let _ = this
+				 v = arguments
+				_.update(arguments) // this.update()
+				setInterval(() => {
+					console.log('변수 v', v)
+				}, 1000);
+			}
+			// a.up = (a) =>{
+			// 	console.log(a)
+			// }
+			a.prototype.update = function  (arguments) {
+				console.log(arguments)
+			}
+			// a.up('z')
+			b = new a('성공')
+			a('실패') // prototype으로 생성한 update를 찾지 못해 에러남
+			// c = new a('c')
+			// console.log(b==c)
+
+		</script>
+	</body>
+</html>

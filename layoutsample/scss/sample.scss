@@ -1,0 +1,56 @@
+*,
+*::after,
+*::before
+{
+	box-sizing: border-box;
+}
+#img{
+	position: absolute;opacity: 0;display: none;
+}
+.container{
+	display:flex;
+	width:100%;
+	flex-wrap: wrap;
+	align-items: center;
+    justify-content: flex-start;
+	$basewidth : 335;
+	$basemaxwidth : 340;
+	gap: 10px;
+	&__item{
+		flex-basis: $basewidth * (683/1024) * 1px;
+		flex-grow: 1.4992679;
+		max-width: $basemaxwidth * 1.4992679 * 1px;
+		max-width: 350PX;
+		flex-shrink: 1;
+		opacity: 0;
+		transition: all 0.5s;
+		&.loadcomplete{
+			opacity: 1;
+		}
+	}
+	&__i{
+		// 1024*683
+		display: block;
+		padding-top: 683/1024 * 100 *  1%;
+		position: relative;
+		
+		height: 0;
+	}
+	.img{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		img{
+			// position: absolute;
+			max-width: 100%;
+			width: 100%;
+		}
+	}
+	a{
+		position: relative;
+		display: block;
+		
+	}
+}

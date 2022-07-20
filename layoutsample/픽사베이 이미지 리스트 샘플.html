@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>픽사베이 이미지 리스트 샘플</title>
+		<link rel="stylesheet" href="css/sample.css" />
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	</head>
+	<body>
+		<p>flex-basis 255*flex-grow</p>
+		<p>flex-grow 가로 / 세로</p>
+		<p>max-width 최소 340 * flex-grow</p>
+
+		<div class="container">
+			<!-- <div class="container__item">
+				<a href="">
+					<span> <img src="img/img.jpg" alt="" /> </span>
+				</a>
+			</div> -->
+		</div>
+		<img  id="img">
+		<script>
+			var imglist = ['img/img1.jpg', 'img/img2.jpg', 'img/img3.jpg', 'img/img4.jpg', 'img/img5.jpg', 'img/img6.jpg', 'img/img7.jpg', 'img/img8.jpg', 'img/img9.jpg', 'img/img10.jpg', 'img/img11.jpg', 'img/img12.jpg', 'img/img13.jpg', 'img/img14.jpg', 'img/img15.jpg', 'img/img16.jpg', 'img/img17.jpg', 'img/img18.jpg', 'img/img19.jpg', 'img/img20.jpg', 'img/img21.jpg', 'img/img22.jpg', 'img/img23.jpg', 'img/img24.jpg', 'img/img25.jpg', 'img/img26.jpg', 'img/img27.jpg', 'img/img28.jpg', 'img/img29.jpg', 'img/img30.jpg', 'img/img31.jpg', 'img/img32.jpg', 'img/img33.jpg', 'img/img34.jpg', 'img/img35.jpg', 'img/img36.jpg', 'img/img37.jpg', 'img/img38.jpg', 'img/img39.jpg', 'img/img40.jpg', 'img/img41.jpg', 'img/img42.jpg', 'img/img43.jpg', 'img/img44.jpg', 'img/img45.jpg', 'img/img46.jpg', 'img/img47.jpg', 'img/img48.jpg', 'img/img49.jpg', 'img/img50.jpg', 'img/img51.jpg', 'img/img52.jpg', 'img/img53.jpg', 'img/img54.jpg', 'img/img55.jpg', 'img/img56.jpg', 'img/img57.jpg', 'img/img58.jpg', 'img/img59.jpg', 'img/img60.jpg', 'img/img61.jpg', 'img/img62.jpg', 'img/img63.jpg', 'img/img64.jpg', 'img/img65.jpg', 'img/img66.jpg', 'img/img67.jpg', 'img/img68.jpg', 'img/img69.jpg', 'img/img70.jpg', 'img/img71.jpg', 'img/img72.jpg', 'img/img73.jpg', 'img/img74.jpg', 'img/img75.jpg', 'img/img76.jpg', 'img/img77.jpg', 'img/img78.jpg', 'img/img79.jpg', 'img/img80.jpg', 'img/img.jpg'];
+			imglist.forEach((el, index) => {
+				// if (index === 50) return;
+				// 					  thumbnailUrl: "https://via.placeholder.com/150/92c952"
+				// title: "accusamus beatae ad facilis cum similique qui sunt"
+				// url: "https://via.placeholder.com/600/92c952"
+				img = $('#img').attr('src',el)
+				w=img[0].naturalWidth
+				h=img[0].naturalHeight
+				console.log(w,h)
+				let html = `
+					  	<div class="container__item"><span class=container__i><span class=img>  <a href=""> <img src="${el}" alt="" /></a> </span></span>  </div>
+					  `;
+
+				$('.container').append(html);
+			});
+			itemlist = $('.container__item img')
+			$.each(itemlist, function (indexInArray, valueOfElement) { 
+				console.log(indexInArray, valueOfElement)
+				$(valueOfElement).one("load", function () {
+					// do action
+					console.log($(this)[0].naturalWidth)
+					w=$(this)[0].naturalWidth
+					h=$(this)[0].naturalHeight
+					fg = w/h
+					fb = 255*fg
+					mw = 340 * fg
+					paddingtop = (h / w * 100) + '%'
+					$(this).parents('.container__i').css({
+						'padding-top' : paddingtop
+					})
+					$(this).parents('.container__item').attr('style',`
+						flex-basis : ${fb}px;
+						flex-grow : ${fg};
+						max-width : ${mw}px
+					`).addClass('loadcomplete')
+
+					}).each(function () {
+						if (this.complete) {
+							$(this).trigger('load');
+						}
+					});
+			});
+			// fetch('https://jsonplaceholder.typicode.com/photos')
+			// 	.then((response) => response.json())
+			// 	.then((data) => {
+			// 		console.log(data);
+			// 	});
+		</script>
+	</body>
+</html>
