@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>plyr</title>
+	<script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
+</head>
+<body>
+	<script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
+	<link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
+	<div class="videoarea">
+		<button type="button" onclick="$(this).next().empty()">비디오닫기</button>
+		<div id="myvideo"></div>
+	</div>
+	<div class="audioarea">
+		<button type="button" onclick="$(this).next().empty()">오디오닫기</button>
+		<div id="myaudio">
+			<audio id="playerAudio"> <source src="sample.mp3" type="audio/mp3" /> </audio>
+			<script>
+				const audio = new Plyr('#playerAudio', {
+					controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'airplay', 'fullscreen']
+				})
+			</script>
+		</div>
+	</div>
+	<button type="button" class="video" data-posterurl="poster.jpg" data-videosource="sample-5s.mp4" data-title="비디오 제목">
+		click
+	</button>
+	<button type="button" class="audio" data-title="오디오 제목" data-audiosource="sample.mp3">
+		adio
+	</button>
+	<style>
+		body{
+			--plyr-color-main:rgb(0, 165, 137);
+			--plyr-control-radius:50px;
+			--plyr-audio-progress-buffered-background:#fff;
+			--plyr-audio-controls-background:transparent;
+			--plyr-audio-control-color:#fff;
+		}
+		.audioarea{
+			padding:40px 0;
+			background-color:rgb(34, 34, 34);
+		}
+		#myaudio{
+			max-width:1062px;
+		}
+	</style>
+	<script>
+		const players = {
+			initVideo(title) {
+				const player = new Plyr('#player', {
+					title: title,
+					controls: ['play-large', 'play', 'progress', 'current-time', 'volume', 'mute', 'pip', 'airplay', 'fullscreen']
+				})
+			},
+			initAudio(title) {
+				// ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen']
+				const audio = new Plyr('#playerAudio', {
+					title: title,
+					controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'airplay', 'fullscreen']
+				})
+			}
+		}
+		$('.video').on('click', function () {
+			_this = $(this).data()
+			$('#myvideo')
+				.html(` <video id="player" playsinline data-poster="${_this.posterurl}"> <source src="${_this.videosource}" type="video/mp4" /> </video> `)
+				players.initVideo(_this.title)
+		})
+		$('.audio').on('click', function () {
+			_this = $(this).data()
+			$('#myaudio')
+				.html(`<audio id="playerAudio"> <source src="${_this.audiosource}" type="audio/mp3" /> </audio>`)
+				players.initAudio(_this.title)
+		});
+	</script>
+</body>
+</html>

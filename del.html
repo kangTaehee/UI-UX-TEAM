@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
+</head>
+
+<body>
+	<button type="button" onclick="abc()">test</button>
+	<script>
+		function abc(arguments) {
+			fetch("http://192.168.0.100:4000/auth/login", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					"name": "ilovekth",
+					"password": "unpl7471!"
+				}),
+			}).then((response) => console.log(response));
+
+		}
+	</script>
+
+
+</body>
+
+</html>

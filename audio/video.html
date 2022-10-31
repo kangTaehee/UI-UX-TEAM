@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
+</head>
+<body>
+	<link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+	</head>
+	<body>
+		<button type="button" class="video" data-posterurl="https://lh5.googleusercontent.com/proxy/vQ1d3izwTlDro2QCNJYnG2tiHNRnSihGZrnUo0hUwN_gryU9WLaEUkXyryin_NksYLOX_epp7NpNRqYSPaJ_aUC_YTX-x4LJ_VQvoZN-5nLg=w3840-h2160-p-k-no-nd-mv" data-videosource="https://file-examples.com/storage/fe651bd80a632c9aa9a0f1d/2017/04/file_example_MP4_480_1_5MG.mp4">
+			click
+		</button>
+		<button type="button" class="audio" data-audioSource="https://file-examples.com/storage/fe651bd80a632c9aa9a0f1d/2017/11/file_example_MP3_5MG.mp3">
+			adio
+		</button>
+		<div id="myvideo"></div>
+		<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+		<script>
+			let lists = [{
+			}]
+			$('.video').on('click', function () {
+				_this = $(this).data()
+				$('#myvideo')
+					.html(`
+						<video  class="video-js" controls preload="auto" width="640" height="264" poster="${_this.posterurl}" data-setup="{}">
+						<source src="${_this.videosource}" type="video/mp4" />
+						</video>
+					`)
+			});
+			$('.audio').on('click', function () {
+				_this = $(this).data()
+				$('#myvideo')
+					.html(`
+		<audio 
+			class="video-js vjs-default-skin" controls preload="auto" width="600" height="600" 
+			poster="/img/awesome-album-art.png" data-setup='{}'>
+			<source src="https://file-examples.com/storage/fe651bd80a632c9aa9a0f1d/2017/11/file_example_MP3_5MG.mp3" type='audio/mp3' />
+		</audio>
+					`)
+			});
+		</script>
+	</body>
+</html>

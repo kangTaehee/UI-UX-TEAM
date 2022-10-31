@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+	<style>
+		svg{
+			position:relative !important;
+			top: -46px !important;
+			/* -webkit-transform: scale(0.6); */
+			height:750px !important;
+			border:1px solid #000;
+			/* width:auto !important; */
+			/* width:320px !important; */
+			width:100% !important;
+		}
+	</style>
+	<div class="tabnav">
+		<ul data-content="tab-nav">
+			<li class="tab_list on"><a href="#locArea00" data-map="all">전체<span class="blind">자원봉사 센터 보기</span><i class="blind" data-text="haze">선택 됨</i></a></li>
+			<li class="tab_list" id="6250000"><a href="#locArea01" data-map="seoul">서울특별시<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6260000"><a href="#locArea02" data-map="busan">부산광역시<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6270000"><a href="#locArea03" data-map="daegu">대구광역시<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6280000"><a href="#locArea04" data-map="incheon">인천광역시<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6290000"><a href="#locArea05" data-map="gwangju">광주광역시<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6300000"><a href="#locArea06" data-map="daejeon">대전광역시<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6310000"><a href="#locArea07" data-map="ulsan">울산광역시<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="5690000"><a href="#locArea08" data-map="sejong">세종특별자치시<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6410000"><a href="#locArea09" data-map="gyeonggi">경기도<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6420000"><a href="#locArea10" data-map="gangwon">강원도<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6430000"><a href="#locArea11" data-map="northChungcheong">충청북도<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6440000"><a href="#locArea12" data-map="southChungcheong">충청남도<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6450000"><a href="#locArea13" data-map="northJeolla">전라북도<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6460000"><a href="#locArea14" data-map="southJeolla">전라남도<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6470000"><a href="#locArea15" data-map="northGyeongsang">경상북도<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6480000"><a href="#locArea16" data-map="southGyeongsang">경상남도<span class="blind">자원봉사 센터 보기</span></a></li>
+			<li class="tab_list" id="6500000"><a href="#locArea17" data-map="jeju">제주특별자치도<span class="blind">자원봉사 센터 보기</span></a></li>
+		</ul>
+	</div>
+	<div class="map_img">
+		<p class="blind">지역자원봉사센터 안내 지도 입니다.</p>
+		<div id="mapdiv"></div>
+		<span id="svgTooltip"><i></i></span>
+	</div>
+	<script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
+	<script src="raphael-min.js"></script>
+	<script src="korea-path.js"></script>
+	<script>
+		$.fn.tab = function (opt) {
+			this.each(function (index, element) {
+				var me = $(this),
+					option = $.extend({
+						onTabOpen: $.noop,
+						onTabClose: $.noop,
+						onTabClick: $.noop,
+						initialOpenIndex: 0,
+						autoFocus: false,
+						activeTab: null,
+						hazeElem: me.find('[data-content="tab-nav"] [data-text="haze"]').clone()
+					}, opt);
+				var init = {
+					set: function () {
+						var el = me,
+							tabNav = me.find('[data-content="tab-nav"]');
+						option.activeTab = tabNav.find('li.on');
+						tabNav.find('li a').on('click dbclick', this.actions);
+					},
+					actions: function (e) {
+						var $this = $(this),
+							tabCont = me.find('[data-content="tab-content"]'),
+							tabList = $(e.target).parents('.tab_list'),
+							tabIndex = tabList.index(),
+							target = $(this.hash);
+						option.onTabOpen(e, target, option.activeTab, tabIndex)
+						option.activeTab = tabList;
+						tabList.siblings().each(function (n, e) {
+							$(this).find('[data-text="haze"]').remove();
+							$(this).removeClass('on');
+							tabCont.find('> div').removeClass('on');
+							tabCont.find('> div').removeAttr('tabIndex')
+						})
+
+						$(this).append(option.hazeElem)
+						tabList.addClass('on')
+						tabCont.find('> div').eq(tabIndex).addClass('on');
+						tabCont.find('> div').eq(tabIndex).attr('tabindex', -1);
+						tabCont.find('> div').eq(tabIndex).focus();
+						return false;
+					}
+				};
+				init.set();
+
+			});
+
+			return this;
+		}
+	</script>
+	<script type="text/javascript">
+		var tabNav = $("[data-content='tab-nav']");
+		var svgs = {};
+		var currentElem;
+		var prev;
+		var mapTooltip = $("#svgTooltip");
+
+		svgMAp();
+
+		$(document).ready(function () {
+			// $("[data-module='tab']")
+			$('.tabnav')
+			.tab({
+				// 메뉴 클릭 시 콜백
+				onTabOpen: function (e, target, oldElem, index) {
+					var svgElem = $(e.target).attr("data-map");
+					svgActive(svgElem);
+				},
+				// 메뉴 닫힐때 콜백
+				onItemClose: function (index, target) {
+
+				}
+			});
+			console.log($("[data-module='tab']"))
+		});
+
+		function svgMAp(elem) {
+			var area = "all";
+
+			var firstTarget = (!elem) ? area : elem;
+			var r = Raphael("mapdiv"), obj, arr = new Array();
+			for (var county in paths) {
+				var obj = r.path(paths[county].path);
+				obj.attr({
+					fill: paths[county].color,
+					title: paths[county].name,
+					stroke: "#151515",
+					"stroke-width": 1,
+					"stroke-linejoin": "round",
+				});
+				arr[obj.id] = county;
+				svgs[arr[obj.id]] = obj
+				if (county == firstTarget) {
+					obj.animate({ fill: "#61acd0" }, 200);
+					prev = county
+					svgTooltip(county)
+					paths[arr[obj.id]].value = "isSelected"
+				};
+				obj.click(function () {
+					if (paths[arr[this.id]].value == "isSelected") {
+						return false;
+					};
+					tabNav.find("li:eq(" + paths[arr[this.id]].index + ") a").click()
+				})
+				obj.mouseover(function (e) {
+					if (paths[arr[this.id]].value == "notSelected") {
+						this.animate({ fill: "#61acd0" }, 200);
+					}
+				});
+				obj.mouseout(function () {
+					if (paths[arr[this.id]].value == "notSelected") {
+						this.animate({ fill: paths[arr[this.id]].color }, 200);
+					}
+				});
+			}
+		}
+
+		function svgActive(id) {
+			// $("#schKey").val("1");
+			// $("#schPlace").val("");
+			// $("#schValue").val("");
+			svgs[id].animate({ fill: "#61acd0" }, 200);
+			svgs[prev].animate({ fill: paths[prev].color }, 200);
+			svgTooltip(id);
+			paths[id].value = "isSelected";
+			paths[prev].value = "notSelected";
+			prev = id;
+		}
+
+		function svgTooltip(elem) {
+			var top = paths[elem].tooltipPos.top, left = paths[elem].tooltipPos.left, text = paths[elem].name;
+			mapTooltip.find("i").text(text);
+			mapTooltip.css({ "top": top + "px", "left": left + "px" });
+		}
+	</script>
+</body>
+
+</html>
