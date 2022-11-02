@@ -20,4 +20,4 @@
 
 ## util
 
-* [table cleaning](util/tableClean.html)
+* [table cleaning](util/tableClean)
