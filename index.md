@@ -17,3 +17,7 @@
 
 * [scss tip](scss-list)
 * [sass-세팅 심플 가이드](doc/sass-세팅 심플 가이드)
+
+## util
+
+* [table cleaning](util/tableClean.html)

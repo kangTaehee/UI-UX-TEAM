@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>테이블 정리기</title>
+	<script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-css.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-html.js"></script>
+<!-- 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-html.min.js"></script> -->
+<style>
+	*{padding:0;margin:0;}
+	button{}
+	#html{display:none;}
+	div{
+		display:grid;
+		grid-template-columns: 45% auto 45%;
+		height:100vh;
+	}
+</style>
+</head>
+<body>
+	<div>
+		<textarea name="" id="input" cols="30" rows="10">
+			<table border="0" cellpadding="0" cellspacing="0" width="610">
+				<col width="56">
+				<col width="97">
+				<col width="73">
+				<col width="68">
+				<col width="79">
+				<col width="63">
+				<col width="82">
+				<col width="91">
+				<tr>
+					<td width="56">선택</td>
+					<td width="97">세금계산서
+						요청번호</td>
+					<td width="73">주문번호</td>
+					<td width="68">주문일자</td>
+					<td width="79">구매확정일</td>
+					<td width="63">수취인</td>
+					<td width="82">판매금액</td>
+					<td width="91">거래명세서</td>
+				</tr>
+				<tr>
+					<td width="56">□</td>
+					<td width="97">403-10-26154</td>
+					<td width="73">주문번호노출</td>
+					<td width="68">2022-12-12</td>
+					<td width="79">2022-12-15</td>
+					<td width="63">홍길동</td>
+					<td width="82">100,000원</td>
+					<td width="91"></td>
+				</tr>
+			</table>
+		</textarea>
+		<button class="generrator">Go</button>
+		<textarea name="" id="output" cols="30" rows="10"></textarea>
+	</div>
+	<div id="html"></div>
+	<script>
+		$('.generrator').on('click', function () {
+			$('#html').html($('#input').val())
+			$('colgroup').remove()
+			$('col').remove()
+			$('*').removeAttr('width')
+			$('*').removeAttr('border')
+			$('*').removeAttr('cellpadding')
+			$('*').removeAttr('cellspacing')
+			$('*').removeAttr('width')
+			$('td').each(function (index, element) {
+				// element == this
+				$(element).html($(element).text())
+			});
+			$('table').each(function (index, element) {
+				// element == this
+				element = $(element)
+				element.prepend('<thead>')
+				element.prepend('<caption>')
+				var head = element.find('tr:first')[0].outerHTML
+				head = head.replaceAll('td>', 'th>')
+				element.find('thead').prepend(head)
+				element.find('tbody tr:first').remove()
+			});
+			$('#output').val($('#html').html())
+			source = $('#output').val()
+			opts = {
+				"indent_size": "4",
+				"indent_char": " ",
+				"max_preserve_newlines": "5",
+				"preserve_newlines": true,
+				"keep_array_indentation": false,
+				"break_chained_methods": false,
+				"indent_scripts": "normal",
+				"brace_style": "collapse",
+				"space_before_conditional": true,
+				"unescape_strings": false,
+				"jslint_happy": false,
+				"end_with_newline": false,
+				"wrap_line_length": "0",
+				"indent_inner_html": false,
+				"comma_first": false,
+				"e4x": false,
+				"indent_empty_lines": false
+			}
+			// const options = { indent_size: 2, space_in_empty_paren: true }
+			// const dataObj = { completed: false, id: 1, title: "delectus aut autem", userId: 1, }
+			// const dataJson = JSON.stringify(dataObj)
+			output = html_beautify(source, opts)
+			/* OUTPUT
+			{
+			  "completed": false,
+			  "id": 1,
+			  "title": "delectus aut autem",
+			  "userId": 1,
+			}
+			*/
+			const strippedString = output.replace(/(<p([^>]+)>)/gi, "");
+			$('#output').val(output)
+			document.querySelector("#output").select();
+    		document.execCommand('copy');
+		});
+	</script>
+	<!-- if (language === 'html') {
+	output = the.beautifier.html(source, opts);
+	} else if (language === 'css') {
+	output = the.beautifier.css(source, opts);
+	} else {
+	if ($('#detect-packers').prop('checked')) {
+	source = unpacker_filter(source);
+	}
+	output = the.beautifier.js(source, opts);
+	}
+	if (the.editor) {
+	the.editor.setValue(output);
+	} else {
+	$('#source').val(output);
+	} -->
+</body>
+</html>
