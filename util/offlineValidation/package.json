@@ -1,0 +1,15 @@
+{
+  "name": "offlinevalidation",
+  "version": "1.0.0",
+  "description": "npm i html-validate-offline",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@adplata/html-validate-offline": "^1.0.6",
+    "html-validate-offline": "^1.0.6"
+  }
+}
