@@ -29,9 +29,8 @@
 <script>
 	const copy = ()=>{
 		str = document.querySelector('.ori').value
-		console.log(str)
+		// console.log(str)
 		let words = str.split('\n');
-		// let words = str.replaceAll('/','\\').split('\n');
 		let md = []
 		let copys = []
 		afterutl = 'd:\\a'
@@ -46,7 +45,7 @@
 		words = [...set];
 		
 		words.map((item) => {
-			console.log(item.search(regex))
+			// console.log(item.search(regex))
 			item = item.replaceAll(excute,'')
 			let txt = `md ${tocopyurl}` + item.slice(0, item.search(regex))
 			let copy = `${afterutl}${item} ${tocopyurl}` + item.slice(0, item.search(regex))
@@ -55,7 +54,7 @@
 		})
 		md=new Set(md)
 		md=[...md]
-		console.log(md);
+		// console.log(md);
 		document.querySelector('.out').value = md.join('\n') + '\n'+ copys.join('\n')
 		document.querySelector(".out").select();
     	document.execCommand('copy');
