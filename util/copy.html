@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>copy generrator</title>
+	<style>
+		*{padding:0;margin:0;font-family: 'Noto Sans KR', sans-serif;}
+		button{}
+		#html{display:none;}
+		.s{
+			display:grid;
+			grid-template-columns: 45% auto 45%;
+			height:95vh;
+		}
+		.s1{
+			display:grid;
+			grid-template-columns: 45% auto 45%;
+			justify-content: space-between;
+			height:5vh;
+		}
+		.s1 input{display:block;}
+	</style>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap">
+	
+</head>
+<body>
+<script>
+	const copy = ()=>{
+		str = document.querySelector('.ori').value
+		console.log(str)
+		let words = str.split('\n');
+		// let words = str.replaceAll('/','\\').split('\n');
+		let md = []
+		let copys = []
+		afterutl = 'd:\\a'
+		tocopyurl = 'd:\\aaa'
+		excute = document.querySelector('.excute').value
+		afterutl = document.querySelector('.afterurl').value
+		tocopyurl = document.querySelector('.beforeurl').value
+		const regex = /\/[ㄱ-ㅎㅏ-ㅣ가-힣A-Za-z0-9_-]+\./g;
+
+		const set = new Set(words);
+
+		words = [...set];
+		
+		words.map((item) => {
+			console.log(item.search(regex))
+			item = item.replaceAll(excute,'')
+			let txt = `md ${tocopyurl}` + item.slice(0, item.search(regex))
+			let copy = `${afterutl}${item} ${tocopyurl}` + item.slice(0, item.search(regex))
+			md.push(txt.replaceAll('/', '\\'))
+			copys.push('copy /Y '+copy.replaceAll('/', '\\'))
+		})
+		md=new Set(md)
+		md=[...md]
+		console.log(md);
+		document.querySelector('.out').value = md.join('\n') + '\n'+ copys.join('\n')
+		document.querySelector(".out").select();
+    	document.execCommand('copy');
+	}
+</script>
+<div class="s1">
+	<input type="text" class="afterurl" placeholder="원본경로">
+	<input type="text" class="excute" placeholder="제외경로" value="/...">
+	<input type="text" class="beforeurl" placeholder="저장경로" value="d:\output1">
+</div>
+<div class="s">
+	<textarea name="" id="" cols="30" rows="10" class="ori">/yongsan2021/src/main/webapp/WEB-INF/jsp/cts/portal/200045_03.jsp
+/yongsan2021/src/main/webapp/WEB-INF/jsp/cts/portal/200045_03.jsp
+/yongsan2021/src/main/webapp/WEB-INF/jsp/cts/portal/200045_03.jsp
+/yongsan2021/src/main/webapp/WEB-INF/jsp/cts/portal/200045_03.jsp
+/yongsan2021/src/main/webapp/WEB-INF/jsp/cts/portal/200045_03.jsp
+/yongsan2021/src/main/webapp/WEB-INF/jsp/cts/portal/200062_03.jsp
+/yongsan2021/src/main/webapp/WEB-INF/jsp/cts/portal/200081_03.jsp
+/yongsan2021/src/main/webapp/WEB-INF/jsp/cts/portal/1.jsp</textarea>
+	<button type="button" onclick="copy()">copy</button>
+	<textarea name="" id="" cols="30" rows="10" class="out"></textarea>
+</div>
+</body>
+</html>

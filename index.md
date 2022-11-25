@@ -21,3 +21,4 @@
 ## util
 
 * [table cleaning](util/tableClean)
+* [copy generator](util/copy)
