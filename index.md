@@ -22,3 +22,5 @@
 
 * [table cleaning](util/tableClean)
 * [copy generator](util/copy)
+
+https://ko.taiwebs.com/windows/download-adobe-photoshop-cc-737.html
