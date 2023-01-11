@@ -1,0 +1,1 @@
+npx npkill -d 경로명
