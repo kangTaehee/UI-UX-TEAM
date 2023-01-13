@@ -23,4 +23,9 @@
 * [table cleaning](util/tableClean)
 * [copy generator](util/copy)
 
+## 퍼블리싱 TIP
+
+* [svg 관리](tip/svg_관리)
+* [포토샵 스크립트](tip/photoshop.md)
+
 https://ko.taiwebs.com/windows/download-adobe-photoshop-cc-737.html
