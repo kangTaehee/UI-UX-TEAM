@@ -29,3 +29,7 @@
 * [포토샵 스크립트](tip/photoshop.md)
 
 https://ko.taiwebs.com/windows/download-adobe-photoshop-cc-737.html
+
+## 최적화 팁
+
+* [loading="lazy"](tip/lazyloading.html)
