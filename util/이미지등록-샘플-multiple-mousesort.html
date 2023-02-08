@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>이미지등록 다중파일</title>
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" type="text/css" href="/static/jslibrary/bootstrap/css/bootstrap.css" />
+<script
+  src="https://code.jquery.com/jquery-1.12.4.js"
+  integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+  crossorigin="anonymous"></script>
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
+
+<!-- jquery ui -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<!-- icon -->
+<!-- <link rel="stylesheet" href="/static/font/font-awesome-4.7.0/css/font-awesome.min.css"> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+	body{background-color:#fff;margin:50px;}
+	body:before{display:none;}
+	form{
+		margin:50px;
+	}
+	.fileList{}
+	.fileList img{max-width:350px;}
+	.fileMoveUp::before {
+		content: '위로 ';
+		
+	}
+	.fileMoveDown::before {
+		content: '아래로 ';		
+	}
+</style>
+</head>
+<body>
+	<p>2019-07-12 강태희</p>
+	<p>사용 라이브러리</p>
+	<p>https://code.jquery.com/jquery-1.12.4.js //기본 제이쿼리</p>
+	<p>https://code.jquery.com/ui/1.12.1/jquery-ui.js //마우스 드래그 정렬</p>
+	<input multiple name="files[]" id="files" type="file" />
+	<p>input:multiple는 폼으로 전송하지 않기때문에 form 밖에 위치함.</p>
+	<p>createObjectURL = 브라우저 ie10이상 지원 기능 사용.  참고.IE10이하는 파일 미리보기 api가 없음.</p>
+	
+	<form id="form1" runat="server">
+		<ul class="fileList imageupload-rotate">
+		</ul>
+		<div class="btnSet c">
+			<button class="btn btn-default">서브밋</button>
+		</div>
+	</form>
+	<script>
+		$('#form1').ajaxForm({
+			contentType : false,
+			processData: false,
+			enctype: "multipart/form-data",
+			dataType : "POST",
+			dataType : 'json',
+			beforeSubmit: function(data, form, option) {
+				var fileSize = fileBuffer.length;
+				if (fileSize>0){
+					for(var i=0; i<fileSize; i++){
+						var obj = {
+								name : "files[]",
+								value : fileBuffer[i],
+								type : "file"
+						};
+						console.log(obj);
+						data.push = obj;
+					}    
+				}
+				console.log('beforeSubmit');
+				console.log(fileBuffer);
+				console.log(data);
+				console.log(form);
+				console.log(option);
+			},
+			success: function(returnData) {
+				console.log("returnData : "+returnData);
+				func(returnData);
+			},
+			error: function(x,e){
+				  console.log("[AF]ajax status : "+x.status);
+				  console.log(e);
+			}
+		});
+
+		var maxfilelength = 7;//최대등록 수
+        fileBuffer = [];// 실제 전송되는 파일 배열
+        const target = document.getElementsByName('files[]');
+		$('#files').change(function(){
+		        Array.prototype.push.apply(fileBuffer, target[0].files);
+		        inhtml();
+		    });
+		function inhtml() {
+			var html = '';
+			$.each(fileBuffer, function(index, file){
+				console.log(index, file)
+			    const fileName = file.name;
+			    html +='<li class="file ui-state-default" data-i='+index+'>'
+			    html +='	<input type="text" class="angle" value="0" name="">'
+			    html +='	<div class="imgarea">'
+			    html +='		<img alt="" src="'+URL.createObjectURL(file)+'">'
+			    html +='	</div>'
+			    html +='	<span class="filename">'+fileName+'</span>'
+			    html +='	<div class="ctrl">'
+			    html +='		<button type="button" class="b-default left90  btn btn-default">90˚ <i class="fa fa-rotate-left" aria-hidden="true"></i></button><button type="button"  class="b-default btn btn-default fileMoveUp"><i class="fa fa-angle-up"></i></button>'
+			    html +='		<button type="button" class="b-default right90 btn btn-default">90˚ <i class="fa fa-rotate-right" aria-hidden="true"></i></button><button type="button" class="b-default btn btn-default fileMoveDown"><i class="fa fa-angle-down"></i></button>'
+			    html +='	</div>'
+			    html +='	<button type="button" class="currentdel">삭제</button>'
+			    html +='</li>'
+			    const fileEx = fileName.slice(fileName.indexOf(".") + 1).toLowerCase();
+			    if(fileEx != "jpg" && fileEx != "png" &&  fileEx != "gif" &&  fileEx != "bmp"){
+			        alert("파일은 (jpg, png, gif, bmp, wmv, mp4, avi) 형식만 등록 가능합니다.");
+			        fileBuffer.splice(index,1);
+			        return false;
+			    }
+			    $('.fileList').html(html);
+			});
+		}
+		$('.fileList').on('click', '.fileMoveUp', function(event) {
+			var bc = $('.fileMoveUp').index(this)
+			console.log(bc+'=버튼인덱스')
+			moveUp(bc)
+		});
+		$('.fileList').on('click', '.fileMoveDown', function(event) {
+			var bc = $('.fileMoveDown').index(this)
+			console.log(bc+'=버튼인덱스')
+			moveDown(bc)
+		});
+		function moveDown(currentindex) {
+			// fileBuffer.splice(fileIndex,1);
+			var movedata = fileBuffer[currentindex]
+			var newContents = fileBuffer;
+			var newPos = currentindex + 1;
+			// if (newPos >= fileBuffer.length) newPos = fileBuffer.length;
+			console.log(newPos)
+			newContents.splice(currentindex, 1);
+			console.log(newContents)
+			newContents.splice(newPos, 0, movedata);
+			console.log(newContents)
+			// return newContents;
+			inhtml();
+		};
+		function moveUp(currentindex) {
+			var movedata = fileBuffer[currentindex]
+			var newContents = fileBuffer;
+			var newPos = currentindex - 1;
+			if (newPos==-1) {newPos=0}
+			newContents.splice(currentindex, 1);
+			newContents.splice(newPos, 0, movedata);
+			inhtml();
+		};
+		$(document).on('click', '.currentdel', function(){
+		    const fileIndex = $(this).parent().index();
+		    console.log(fileIndex)
+		    fileBuffer.splice(fileIndex,1);
+		    $(this).parents('li').remove();
+		    console.log(fileBuffer)
+		     // $('.fileList>div:eq('+fileIndex+')').remove();
+		});
+		function imageRotaion(_this,deg) {
+			angle = parseInt(_this.parents('li').find('.angle').val())
+			console.log(angle, typeof angle)
+			angle = (angle + deg) % 360;
+			_this.parent().prevAll('.imgarea').find('img').css('transform','rotate(' + angle + 'deg)');
+			// $('#blah')[0].className = "rotate" + angle;
+			_this.parents('li').find('.angle').val(angle)
+			if (Math.abs(angle)==90 || Math.abs(angle) ==270) {
+				_this.parent().prev('.imgarea').find('img')
+					.css({
+						'max-width' : _this.parent().prev('.imgarea').height(),
+						'max-height': _this.parent().prev('.imgarea').width()
+					});
+			}else{
+				_this.parent().prevAll('.imgarea').find('img')
+					.css({
+						'max-width' : 'auto',
+						'max-height': 'auto'
+					});
+			}
+		}
+		$('.imageupload-rotate')
+			.on('click', '.left90', function(event) {
+				imageRotaion($(this),-90)
+			})
+			.on('click', '.right90', function(event) {
+				imageRotaion($(this),90)
+			})
+		function fileadd(argument) {
+			if (filelength>maxfilelength) {
+				filelength-=1;
+				alert(`최대${maxfilelength}장까지 등록가능합니다.`)
+				return false;
+			}
+			return true;
+		}
+		function readURL(input) {//URL.createObjectURL 로 대체함 
+			if (input[0].files && input[0].files[0]) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					console.log(e)
+					input.parent().find('img').attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input[0].files[0]);
+			}
+		}
+		function function_name(argument) {
+			var newfiles = new Array()
+			newfiles = []
+			console.log(fileBuffer)
+			$( ".fileList li" ).each(function(index, el) {
+				console.log(index)
+				var x = $(this).data().i
+				newfiles[index] = fileBuffer[x]
+				$(this).data().i = index
+			});
+			fileBuffer = newfiles
+			console.log(fileBuffer)
+		}
+		$( function() {
+		    $( ".fileList" ).sortable({
+		    	deactivate: function( event, ui ) {
+		    		console.log('deactivate')
+		    		function_name()
+		    	}
+
+		    });
+		    $( ".fileList" ).disableSelection();
+		});
+	</script>
+	<style>
+	.imageupload-rotate{overflow:hidden;}
+	.imageupload-rotate li { float: left; width: 350px; position: relative; margin-right: 20px; }
+	.imageupload-rotate li .currentdel { position: absolute; z-index: 100; top: 5px; right: 0; color: transparent; border: none; background-color: #000; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.5) url(/static/bos/img/close.svg) center center no-repeat; color:#fff;}
+	.imageupload-rotate li .imgarea { margin: 5px 0; background-color: #ddd; position: relative; cursor: pointer; overflow:hidden;}
+	.imageupload-rotate li .imgarea:before { display: block; content: ''; padding-top: 75%; }
+	.imageupload-rotate li .imgarea img { position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; max-width: 100%; max-height: 100%; }
+	.imageupload-rotate li .imgarea img.rotate90, .imageupload-rotate li .imgarea img.rotate270 { position: absolute; top: 0; bottom: 0; margin: 0 auto; }
+	.imageupload-rotate li .imgarea img.rotate90 { -webkit-transform: rotate(90deg) translateY(-100%); transform: rotate(90deg) translateY(-100%); }
+	.imageupload-rotate li .imgarea img.rotate180 { -webkit-transform: rotate(180deg) translate(-100%, -100%); transform: rotate(180deg) translate(-100%, -100%); }
+	.imageupload-rotate li .imgarea img.rotate270 { -webkit-transform: rotate(270deg) translateX(-100%); transform: rotate(270deg) translateX(-100%); }
+	</style>
+</body>
+</html>

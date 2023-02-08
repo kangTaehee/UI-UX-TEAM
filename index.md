@@ -20,6 +20,7 @@
 
 - [table cleaning](util/tableClean)
 - [copy generator](util/copy)
+- [이미지 다중선택, 드래그, 회전](util/이미지등록-샘플-multiple-mousesort)
 
 ## 퍼블리싱 TIP
 
