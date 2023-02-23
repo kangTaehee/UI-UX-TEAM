@@ -36,3 +36,4 @@ https://ko.taiwebs.com/windows/download-adobe-photoshop-cc-737.html
 # react recoil
 
 - [recoil](doc/recoil)
+- [recoil-비동기처리](doc/React recoil Asynchronous (비동기처리).pdf)
