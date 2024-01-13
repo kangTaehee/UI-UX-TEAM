@@ -23,13 +23,13 @@ function formAction(){
     return false;
   }
 }
-```
 <code>
 <form action='/urls/...' onsubmit='return formAction()'>
   <input type=text>
   <input type=submit value=submit>
 </form>
 </code>
+```
 
 ## 활용
 ```javascript
@@ -47,4 +47,4 @@ function fnsubmit(_this){
 </form>
 ```
 * 하나의 폼에서 `<input type=hidden name=type value=edit>` 속성값에 따라 `form`의 `action` 대상을 지정 할 수 있다.
-* 전송버튼을 제공 하지 않아도 기능을 수행할 수도 있다.(※ 권장하지 않는다. UI/UX 측면에서 올바르지 못하다(UI는 직관적이어야 한다). 예를들어 엔터기가 없는 환경에서는 서비스를 이용할 수 없다. 가상 입력도구를 활용하는 환경구성 키오스크 등)
+
