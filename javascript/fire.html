@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>캔버스 불꽃 애니메이션</title>
+<style>
+  body { margin: 0; overflow: hidden; }
+  canvas { display: block; }
+</style>
+</head>
+
+<body>
+
+    <canvas id="fireCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById("fireCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // 불꽃 파티클 배열
+        const particles = [];
+
+        // 불꽃 파티클 클래스
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 2;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * -3 - 1.5;
+                this.color = `hsl(${Math.random() * 30 + 10}, 100%, 50%)`;
+                this.opacity = 1;
+                this.life = 0;
+            }
+
+            // 파티클 업데이트 메서드
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life += 0.02;
+                this.opacity -= 0.02;
+            }
+
+            // 파티클 그리기 메서드
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // 파티클 생성 함수
+        function createParticles(x, y) {
+            for (let i = 0; i < 5; i++) {
+                particles.push(new Particle(x, y));
+            }
+        }
+
+        // 애니메이션 루프
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((particle, index) => {
+                particle.update();
+                particle.draw();
+
+                // 파티클이 작아지거나 불투명해지면 제거
+                if (particle.opacity <= 0) {
+                    particles.splice(index, 1);
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // 클릭 시 불꽃 생성 이벤트
+        canvas.addEventListener("click", (event) => {
+            createParticles(event.clientX, event.clientY);
+        });
+
+        // 애니메이션 시작
+        animate();
+    </script>
+
+</body>
+
+</html>

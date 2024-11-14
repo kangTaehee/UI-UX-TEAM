@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+<body>
+    <input list="typesOfFruit" placeholder="입력하세용" />
+
+    <datalist id="typesOfFruit">
+        <option>콩고</option>
+        <option>대한민국</option>
+        <option>이럴숮숮</option>
+    </datalist>
+    <script>
+        var input = document.querySelector("input");
+        var options = Array.from(document.querySelector("datalist").options).map(
+            function (el) {
+                return el.innerHTML;
+            }
+        ); //Optional if you have data
+        input.addEventListener("keypress", function (e) {
+            console.log(e);
+            if (e.keyCode == 13) {
+                var relevantOptions = options.filter(function (option) {
+                    return option.toLowerCase().includes(input.value.toLowerCase());
+                }); // filtering the data list based on input query
+                console.log(relevantOptions.length);
+                if (relevantOptions.length > 0) {
+                    input.value = relevantOptions.shift(); //Taking the first
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

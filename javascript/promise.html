@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // const APIURL = "http://175.125.91.38:5555";
+        const APIURL = "https://jsonplaceholder.typicode.com";
+        // 새로운 게시판 정보를 생성합니다.
+        const POSTNEWBOARD = { url: `${apiURL}/posts`, method: 'POST' }
+        const PUTSELECTORINFO = (id) => ({ url: `${apiURL}/${id}/selectorInfo`, method: 'PUT' })
+        
+
+        const fetchs = (api, body = {}) => {
+            return  fetch(api.url, {
+                method: api.method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+        }
+
+        async function createNewBoardAndUpdateSelectorInfo(boardData, selectorData, bbs_id) {
+            try {
+                // 새 게시판 생성
+                const newBoardResponse = await fetchs(POSTNEWBOARD, boardData)
+                if (!newBoardResponse.ok) {
+                    throw new Error('새 게시판 생성에 실패했습니다.');
+                }
+
+                // 선택자 정보 업데이트
+                const putResponse = await fetchs(PUTSELECTORINFO(bbs_id), selectorData)
+                if (!putResponse.ok) {
+                    throw new Error('선택자 정보 업데이트에 실패했습니다.');
+                }
+                return '게시판 생성 및 선택자 정보 업데이트가 성공적으로 완료되었습니다.';
+            } catch (error) {
+                return error.message;
+            }
+        }
+        // 비동기 함수 호출
+        let newBoardData = {}; // 새 게시판 데이터
+        let selectorData = {}; // 선택자 데이터
+        createNewBoardAndUpdateSelectorInfo(newBoardData, selectorData, 'posts/1?')
+            .then((result) => {
+                console.log(result); // 성공 메시지 출력
+            })
+            .catch((error) => {
+                console.error('오류:', error); // 오류 메시지 출력
+            });
+    </script>
+</body>
+
+</html>

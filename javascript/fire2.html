@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>캔버스 촛불 애니메이션</title>
+<style>
+  body { margin: 0; overflow: hidden; background-color: #000; }
+  canvas { display: block;border:1px solid #fff; }
+</style>
+</head>
+
+<body>
+
+    <canvas id="candleCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById("candleCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // 불꽃 색상과 위치 설정
+        const flameColor = 'rgba(255, 160, 0, 0.5)';
+        const flameCenterColor = 'rgba(255, 200, 100, 0.8)';
+        const flameSize = 40;
+        const candleX = canvas.width / 2;
+        const candleY = canvas.height - 150;
+
+        // 불꽃 그리기 함수
+        function drawFlame() {
+            // 불꽃의 외곽 (흔들리는 효과를 주기 위해 x 위치를 조금 변경)
+            const offsetX = Math.sin(Date.now() * 0.005) * 5;
+
+            // 외곽 불꽃
+            ctx.beginPath();
+            const gradient = ctx.createRadialGradient(
+                candleX + offsetX, candleY, 0,
+                candleX + offsetX, candleY - flameSize, flameSize
+            );
+            gradient.addColorStop(0, flameCenterColor);
+            gradient.addColorStop(1, flameColor);
+
+            ctx.fillStyle = gradient;
+            ctx.arc(candleX + offsetX, candleY - flameSize / 2, flameSize, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 불꽃 중심부
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.arc(candleX + offsetX, candleY - flameSize / 2, flameSize / 4, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // 촛불 심지 그리기 함수
+        function drawWick() {
+            ctx.fillStyle = "#333";
+            ctx.fillRect(candleX - 2, candleY, 4, 20);
+        }
+
+        // 애니메이션 루프
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawWick();
+            drawFlame();
+            requestAnimationFrame(animate);
+        }
+
+        // 애니메이션 시작
+        animate();
+    </script>
+
+</body>
+
+</html>

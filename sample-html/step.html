@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let Animal = (name, type) => {
+            this.name = name
+            this.type = type
+            this.age = 0
+        }
+        Animal.prototype.birthday = function () {
+            this.age++
+        }
+        const leo = new Animal('Leo', 'Lion')
+        console.log(leo)
+    </script>
+</head>
+
+<body>
+    <ol class="step2">
+        <li>1. 공고접수<br>(홈페이지 공고 신청서류접수)</li>
+        <li>2. 1/2차 내부서류심의</li>
+        <li>3. 3차 평생교육협의회 심의</li>
+        <li>4. 4차 지방보조금 심의위원회 심의</li>
+        <li>5. 심의결과통보</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+        <li>9</li>
+        <li>10</li>
+        <li>11</li>
+        <li>12</li>
+        <li>13</li>
+        <li>14</li>
+        <li>15</li>
+        <li>16</li>
+        <li class="empty">17 empty</li>
+        <li class="empty">18 empty</li>
+        <li class="empty">19 empty</li>
+        <li class="empty">20 empty</li>
+    </ol>
+</body>
+
+</html>

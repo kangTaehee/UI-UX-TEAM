@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
+
+    <style>
+        .media_header_full_wrap {
+  position: relative;
+  height: 400px;
+  
+  opacity: 1;
+  background-color: #000;
+  color: #fff; }
+        .media_header_full_backgrounds{
+            position:fixed;
+            top:0;
+            left:0;
+            height:500px;
+            /* transition: all 0.5s; */
+                transition: transform ease, -webkit-transform ease;
+    will-change: transform;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Suzy_at_a_fansigning_event%2C_31_January_2017_01.jpg/250px-Suzy_at_a_fansigning_event%2C_31_January_2017_01.jpg'); 
+        }
+        .media_header_full_pattern{
+            background-color:red;
+                position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    height:80px;
+        }
+        .media_header_full_caption_wrap{
+                height: 400px;
+    width: 100%;
+    position: fixed;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    -webkit-transition: -webkit-transform ease;
+    transition: -webkit-transform ease;
+    transition: transform ease;
+    transition: transform ease, -webkit-transform ease;
+    will-change: transform;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    https://www.mica.edu/applying-to-mica/
+
+
+
+    <div class="page_feature">
+        <div class="js-media-full media_header_full_wrap">
+            <div class="media_header_full_backgrounds" style="transform: translateY(0px);">
+                <div class="js-background media_header_full_background fs-background-element fs-background">
+                    <div class="fs-background-container">
+                        <div class="fs-background-media fs-background-responsive fs-background-native" aria-hidden="true"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="media_header_full_caption_wrap" style="transform: translateY(0px);">
+                <div class="fs-row">
+                    <div class="fs-cell fs-lg-16 fs-lg-push-1">
+                        <div class="media_header_full_caption">
+                            <h1 class="page_title" id="page_title">Apply to MICA</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="media_header_full_pattern" style="height: 45px;">
+                <div class="media_header_full_pattern_inner"></div>
+            </div>
+        </div>
+        <div class="sub_wrap_mobile">
+            <div class="fs-row">
+                <div class="fs-cell">
+                    <div class="sub_wrap_mobile_inner">
+                        <div class="js-sub-wrap-mobile sub_mobile">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var scroll_ticking = false
+        function init() {
+            $media = $(".js-media-full");
+            if ($media.length) {
+                media_height = $media.outerHeight();
+                $background = $media.find(".media_header_full_backgrounds");
+                $caption = $media.find(".media_header_full_caption_wrap");
+                $pattern = $media.find(".media_header_full_pattern");
+                pattern_height = $(".media_header_full_pattern_inner").outerHeight();
+                scroll_top = 0;
+                image_buffer = 150;
+                caption_buffer = 100;
+                last_scroll_y = 0;
+                scroll_ticking = false;
+
+                // bindUI();
+                // Site.onScroll.push(scroll);
+                // Site.onResize.push(resize);
+                // Site.scroll();
+            }
+        }
+        init()
+        function scroll() {
+            console.log('scroll')
+            scroll_top = window.pageYOffset;
+            requestTick();
+        }
+        function requestTick() {
+            if (!scroll_ticking) {
+                window.requestAnimationFrame(scrollUpdate);
+                scroll_ticking = true;
+            }
+        }
+        function scrollUpdate() {
+
+            // 위 코드는 스크롤 위치가 0보다 크고 미디어 높이보다 작은지 확인
+            if (scroll_top > 0 && scroll_top < media_height) { var image_rate = image_buffer / media_height; var image_amount = (image_rate * scroll_top) * -1; var patten_rate = (pattern_height - 1) / media_height; var patten_amount = patten_rate * scroll_top; $background.css("-webkit-transform", "translateY(" + image_amount + "px)").css("transform", "translateY(" + image_amount + "px)"); $pattern.css("height", (pattern_height - patten_amount) + "px"); } else if (scroll_top <= 0) { $background.css("-webkit-transform", "translateY(0px)").css("transform", "translateY(0px)"); $pattern.css("height", pattern_height + "px"); } else if (scroll_top >= media_height) {
+                $background
+                    .css("-webkit-transform", "translateY(-" + image_buffer + "px)")
+                    .css("transform", "translateY(-" + image_buffer + "px)");
+                $pattern.css("height", "0px");
+            }
+
+            if (scroll_top > 0 && scroll_top < (media_height / 2)) { var caption_rate = caption_buffer / (media_height / 2); var caption_amount = (caption_rate * scroll_top) * -1; $caption.css("-webkit-transform", "translateY(" + caption_amount + "px)").css("transform", "translateY(" + caption_amount + "px)"); } else if (scroll_top <= 0) { $caption.css("-webkit-transform", "translateY(0px)").css("transform", "translateY(0px)"); } else if (scroll_top >= (media_height / 2)) {
+                $caption
+                    .css("-webkit-transform", "translateY(-" + caption_buffer + "px)")
+                    .css("transform", "translateY(-" + caption_buffer + "px)");
+            }
+
+            if (scroll_top > media_height + 50) {
+                // $media.addClass("covered");
+            } else {
+                // $media.removeClass("covered");
+            }
+
+            scroll_ticking = false;
+        }
+        $(window).on("scroll", scroll);
+
+    </script>
+    <div>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+        br` <br> <br>
+    </div>
+</body>
+
+</html>

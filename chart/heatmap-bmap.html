@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mousemove example (with backgroundColor) | heatmap.js</title>
+    <style>
+      body, html { margin:0; padding:0; height:100%;}
+      body { font-family:sans-serif; }
+      body * { font-weight:200;}
+      #heatmapContainerWrapper { width:100%; height:100%; position:absolute; }
+      #heatmapContainer { width:100%; height:100%;}
+      h1 { position:absolute; background:black; color:white; padding:10px; font-weight:200; z-index:10000;}
+      #all-examples-info { position:absolute; background:white; font-size:16px; padding:20px; top:100px; width:350px; line-height:150%; border:1px solid rgba(0,0,0,.2);}
+      .heatmap{
+        width:2545px;
+        height:3812px;
+        background:url(img/2023-10-05-16-22-01.png) center center no-repeat;
+      }
+    </style>
+  </head>
+
+<body>
+    <div id="heatmapContainerWrapper">
+        <div id="heatmapContainer">
+
+        </div>
+
+    </div>
+    <h2>1차 목표</h2>
+    <ol>
+        <li>사용자 화면의 클릭(마우스클릭)에 대한 좌표계 데이터 수집</li>
+        <li>데이터 군집화 처리 <a href="https://velog.io/@gangjoo/ML-%EA%B5%B0%EC%A7%91%ED%99%94-K-Means-Clustering" target="_blank" title="새창열림" rel="noopener">관련링크</a></li>
+        <li>시각화 표현</li>
+    </ol>
+    <h2>2차 개선</h2>
+    <ol>
+        <li>태블릿, 모바일 탭 액션 / 키보드 엔터 액션</li>
+        <li>반응형 화면에 대한 대응</li>
+
+
+    </ol>
+    <h2>추가 목표</h2>
+    <ol>
+        <li>마우스 이동액션에 대한 수집 및 표현방법</li>
+    </ol>
+    <div class="heatmap"></div>
+    <script src="./heatmap.js-master/build/heatmap.min.js"></script>
+    <script>
+        window.onload = function () {
+            // minimal heatmap instance configuration
+            var heatmapInstance = h337.create({
+                // only container is required, the rest will be defaults
+                container: document.querySelector('.heatmap')
+            });
+
+            // now generate some random data
+            var points = [];
+            var max = 0;
+            var width = 2535;
+            var height = 3812;
+            var len = 1000;
+
+            while (len--) {
+                var val = Math.floor(Math.random() * 100);
+                max = Math.max(max, val);
+                var point = {
+                    x: Math.floor(Math.random() * width),
+                    y: Math.floor(Math.random() * height),
+                    value: val
+                };
+                points.push(point);
+            }
+            console.info(points)
+            // heatmap data format
+            var data = {
+                max: max,
+                data: points
+            };
+            // if you have a set of datapoints always use setData instead of addData
+            // for data initialization
+            heatmapInstance.setData(data);
+
+        };
+    </script>
+</body>
+
+</html>

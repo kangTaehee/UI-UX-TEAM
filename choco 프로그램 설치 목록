@@ -1,0 +1,17 @@
+cmd
+powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PAT
+
+choco install bandizip --version 7.22 -y
+choco install nateon --version 5.1.5.0 -y
+choco install vscode --version 1.63.2 -y
+choco install google-drive-file-stream --version 54.0.3.0 -y
+choco install googlephotos --version 1.1.0.20150530 -y
+choco install google-backup-and-sync --version 3.56.3802.7766 -y
+choco install googledrive --version 2.34.5075.1619 -y
+choco install googlechrome --version 97.0.4692.99 -y
+choco install googlechrome.canary --version 85.0.2 -y
+choco install python --version 3.10.2 -y
+choco install nodejs.install --version 17.4.0 -y
+choco install gulp-cli --version 2.3.0.20201126 -y
+choco install nodejs --version 17.4.0 -y
+choco install treesizefree.portable
