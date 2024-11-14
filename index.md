@@ -10,6 +10,7 @@
 - [svn 이란](svn)
 - [css3 clac](calc)
 - [vscode Tip](vscode)
+- [제플린 수동설치](adobe\zepline.md)
 
 ## sass
 
