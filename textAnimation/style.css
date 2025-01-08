@@ -1,0 +1,269 @@
+
+
+a,
+aside,
+body,
+canvas,
+caption,
+center,
+code,
+div,
+em,
+footer,
+form,
+h1,
+h2,
+h3,
+header,
+html,
+i,
+iframe,
+img,
+label,
+li,
+nav,
+object,
+p,
+section,
+span,
+th,
+time,
+tr,
+ul,
+video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline
+}
+
+.section-activites {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: center;
+	height: 100vh;
+	background-color: #f8f6f5;
+	padding: 100px 0 40px
+}
+
+.section-activites__content {
+	position: relative;
+	overflow: hidden
+}
+
+.section-activites__subheading {
+	margin-bottom: 5rem;
+	padding-top: .625rem
+}
+
+.section-activites__list {
+	overflow: hidden;
+	margin-left: -3.125rem
+}
+
+.section-activites__list-item {
+	font-weight: 400;
+	-webkit-font-smoothing: antialiased;
+	-khtml-font-smoothing: antialiased;
+	-apple-font-smoothing: antialiased;
+	font-smooth: always;
+	-moz-osx-font-smoothing: grayscale;
+	position: relative;
+	margin-top: .9375rem;
+	overflow: hidden;
+	padding-left: 3.125rem
+}
+
+.section-activites__list-item a.bulletVisible {
+	opacity: 1
+}
+
+.section-activites__list-item a.bulletVisible:before {
+	opacity: 1;
+	transition: opacity .5s
+}
+
+.section-activites__list-item a {
+	z-index: 0;
+	top: 0;
+	position: relative
+}
+
+.section-activites__list-item a:before {
+	position: absolute;
+	left: -2rem;
+	top: 50%;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: #474734;
+	opacity: 0;
+	transition: opacity .5s;
+	content: ''
+}
+
+.section-activites__list-item a .section-activites__link--hidden {
+	left: 0;
+	top: -4px;
+	position: absolute;
+	opacity: 0;
+	color: #fff;
+	-webkit-text-stroke: 1px #fff;
+	transition: opacity .5s;
+	clip-path: polygon(0 0, 350px 0, 350px 100%, 0 100%)
+}
+
+.section-activites__list-item a:hover {
+	z-index: 5
+}
+
+.section-activites__list-item a:hover .section-activites__link--hidden {
+	opacity: 0;
+	transition: opacity .5s
+}
+
+.section-activites__list-item:first-child:before {
+	display: none
+}
+
+.section-activites__list-item:last-child {
+	margin-right: 0
+}
+
+.section-activites__link {
+	color: #474734;
+	position: relative;
+	font-family: "Bon Vivant Serif";
+	font-weight: 400;
+	font-size: 3.125rem;
+	line-height: 3.75rem
+}
+
+.section-activites__images-container {
+	position: absolute;
+	z-index: 2;
+	width: 350px;
+	height: 450px;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+	pointer-events: none
+}
+
+.section-activites__images {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 350px;
+	height: 500px;
+	overflow: hidden
+}
+
+.section-activites__image {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: auto;
+	vertical-align: middle;
+	border-style: none
+}
+
+.section-activites__current-image {
+	height: 450px;
+	width: 100%
+}
+
+.section-activites__next-image {
+	height: 450px;
+	width: 100%;
+	z-index: 1
+}
+
+
+@media (min-width: 769px) {
+	.section-activites__list-item {
+		display: inline-block;
+		margin-top: 0
+	}
+
+	.section-activites__list-item a {
+		/* top: 250px */
+	}
+
+	.section-activites__list-item a:hover {
+		z-index: 5
+	}
+
+	.section-activites__list-item a:hover .section-activites__link--hidden {
+		opacity: 1;
+		transition: opacity .5s
+	}
+
+	.section-activites__link {
+		font-size: 4.375rem;
+		line-height: 5.875rem
+	}
+
+	.section-activites__content {
+		padding-bottom: 5.9375rem
+	}
+}
+
+@media (max-width: 480px) {
+	.section-activites {
+		padding: 90px 0;
+		height: auto
+	}
+
+	.section-activites__content {
+		padding-bottom: 1.875rem;
+		overflow: initial
+	}
+
+	.section-activites__subheading {
+		margin-bottom: 1.875rem
+	}
+
+	.section-activites__images-container {
+		display: none
+	}
+}
+
+@media screen and (max-width: 350px) {
+	.section-activites__link {
+		font-size: 2.5rem;
+		line-height: 3.125rem
+	}
+}
+@media (min-width: 1441px) {
+	.section-full-image__content {
+		height: auto
+	}
+
+	.section-full-image {
+		height: auto
+	}
+
+	.section-full-image__image {
+		width: 100%;
+		height: auto
+	}
+
+	.section-activites__list-item:before {
+		left: -2.5rem
+	}
+}
+
+.container--small {
+	max-width: 1000px;
+	width: 80%
+}@media (min-width: 1441px) {
+	.container {
+		width: 100%
+	}
+}

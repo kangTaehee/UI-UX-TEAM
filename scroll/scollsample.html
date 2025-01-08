@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="locomotive-scroll.css" />
+	</head>
+	<body>
+		<script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@beta/bundled/locomotive-scroll.min.js"></script>
+		<script>
+			(function () {
+				const locomotiveScroll = new LocomotiveScroll();
+			})();
+		</script>
+		<div style="height: 100vh"></div>
+		<main style="height: 150vh">
+			<div data-scroll >
+				<div>
+					<h1>Hello 👋</h1>
+				</div>
+				<div>
+					<h2>What's up?</h2>
+					<p>😬</p>
+				</div>
+			</div>
+		</main>
+		
+		<script >
+			// import LocomotiveScroll from 'locomotive-scroll';
+
+			const scroll = new LocomotiveScroll();
+
+			scroll.on('call', (func) => {
+				// Using modularJS
+				this.call(...func);
+				// Using jQuery events
+				$(document).trigger(func);
+				// Or do it your own way 😎
+			});
+		</script>
+	</body>
+</html>

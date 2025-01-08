@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mouse Reactive Smoke</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<!-- <script src="" integrity="sha512-1Ta3TNpk5OD+XKlVMaJY7dC5Tu/Lx4jd2BPu8kxUZ/+hAHpxawrvSiRN0cvBU+oDmSwWVzK8FbILwudcZF6KEQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+<script type="module">
+import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.172.0/three.module.min.js';
+
+// Scene, Camera, Renderer
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Particle System
+const particleCount = 50;
+const particles = new THREE.BufferGeometry();
+const positions = new Float32Array(particleCount * 3); // x, y, z for each particle
+const velocities = new Float32Array(particleCount * 3); // velocity for each axis
+
+for (let i = 0; i < particleCount; i++) {
+  positions[i * 3] = (Math.random() - 0.5) * 20; // x
+  positions[i * 3 + 1] = (Math.random() - 0.5) * 20; // y
+  positions[i * 3 + 2] = (Math.random() - 0.5) * 20; // z
+
+  velocities[i * 3] = 0;
+  velocities[i * 3 + 1] = 0;
+  velocities[i * 3 + 2] = 0;
+}
+
+particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+particles.setAttribute('velocity', new THREE.BufferAttribute(velocities, 3));
+
+const material = new THREE.PointsMaterial({
+  color: 0xffffff,
+  size: 0.2,
+  transparent: true,
+  opacity: 0.8,
+  blending: THREE.AdditiveBlending,
+});
+const particleSystem = new THREE.Points(particles, material);
+scene.add(particleSystem);
+
+// Camera position
+camera.position.z = 10;
+
+// Mouse interaction
+const mouse = new THREE.Vector2();
+window.addEventListener('mousemove', (event) => {
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+});
+
+// Animation loop
+function animate() {
+  const positions = particles.getAttribute('position');
+  const velocities = particles.getAttribute('velocity');
+
+  for (let i = 0; i < particleCount; i++) {
+    // Add mouse influence
+    const dx = mouse.x * 10 - positions.array[i * 3];
+    const dy = mouse.y * 10 - positions.array[i * 3 + 1];
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    const force = Math.min(1 / distance, 0.02);
+
+    velocities.array[i * 3] += force * dx * 0.1;
+    velocities.array[i * 3 + 1] += force * dy * 0.1;
+
+    // Update positions with velocity
+    positions.array[i * 3] += velocities.array[i * 3];
+    positions.array[i * 3 + 1] += velocities.array[i * 3 + 1];
+    positions.array[i * 3 + 2] += velocities.array[i * 3 + 2] * 0.95; // Slow Z-axis
+
+    // Fade out effect
+    velocities.array[i * 3] *= 0.95;
+    velocities.array[i * 3 + 1] *= 0.95;
+    velocities.array[i * 3 + 2] *= 0.95;
+  }
+
+  particles.getAttribute('position').needsUpdate = true;
+  particles.getAttribute('velocity').needsUpdate = true;
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
