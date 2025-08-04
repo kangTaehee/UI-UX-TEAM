@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Mr+Dafoe&family=Roboto+Condensed:wght@400;700&display=swap');
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}		
+body {
+  --shape-margin: clamp(1rem, 0.6364rem + 1.8182vw, 2rem);
+  --left: 80%;
+  background-color:#fefef2;
+  font-family: 'Roboto Condensed', sans-serif;
+  margin: 0 auto;
+  max-width: 1200px;
+  min-height: 100dvh;
+  padding: 0;
+}
+h1 {
+  background-color: #dd2c3b;
+  color:#fefef2;
+  display: block;
+  font-family: 'Abril Fatface', cursive;
+  font-size: clamp(2.25rem, 1.0682rem + 5.9091vw, 5.5rem);
+  letter-spacing: 0.015em;
+  margin: 0;
+  padding: 0 1rem;
+  text-align: center;
+  text-shadow: 4px 4px 0 #000;
+}
+h2 {
+  color: #e6335a;
+  font-family: 'Mr Dafoe', cursive;
+  font-size: clamp(2.25rem, 1.0682rem + 5.9091vw, 5.5rem);
+  font-weight: 400;
+  line-height: 1;
+  margin: 0 0 .65em 0;
+  text-align: center;
+  text-shadow: 4px 4px 0 #918a81;
+  transform: rotate(-3deg);
+}
+main {
+  font-size: large;
+  line-height: 1.4;
+  margin: 0;
+  color: darkslategray;
+  padding: 1em;
+}
+aside {
+  background: #fee74c;
+  clip-path: circle();
+  float: right;
+  height: 300px;
+  object-fit: cover;
+  /* shape-margin: var(--shape-margin); */
+  shape-outside: circle();
+  margin-left:20px;
+  width: 300px;
+}
+aside img {
+  border-radius: 50%;
+  height: 100px;
+  object-fit: cover;
+  transform: rotate(15deg) translate(50%, -40%);
+  width: 100px;
+}
+q {
+  color: hotpink;
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03rem;
+  line-height: 1.1;
+  padding: 2rem;
+  text-align: center;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, .7);
+  quotes: "«" "»";
+}
+p{text-align: justify;}
+ul {
+  display: grid;
+  gap: 1em;
+  padding: 0;
+}
+li {
+  display: grid;
+  gap: 1em;
+  grid-template-columns: 150px 1fr;
+}
+li h3 {
+  margin: 0;
+}
+h3 span {
+  display: inline-block;
+  font-size: .8rem;
+  font-weight: 400;
+}
+li img {
+  aspect-ratio: 1/1;
+  block-size: 150px;
+  border: 1px solid lightgray;
+}
+small {
+  display: block;
+  line-height: 1.3;
+  margin-block-start: .25rem;
+  text-align: start;
+}
+@media (max-width: 500px) {
+  aside {
+    float: none;
+    margin: 0 0 0 auto;
+  }
+}
+.left {
+  clip-path: polygon(0% 0%, var(--left) 50%, 0% 100%);
+  float: left;
+  height: 100vh;
+  object-fit: cover;
+  shape-margin: var(--shape-margin);
+  shape-outside: polygon(0% 0%, var(--left) 50%, 0% 100%) padding-box;
+  width: 25%;
+}
+	</style>
+</head>
+
+<body>
+	<h1>1986년 최고의 앨범!</h1>
+	<img src="https://assets.stoumann.dk/img/casette.jpg" class="left"></div>
+	<main>
+		<h2>멋지고 정말 훌륭해요!</h2>
+		<aside>
+			<q>An absolute banger, filled with rad synth-pop vibes, catchy tunes, and lyrics</q>
+			<img src="https://assets.stoumann.dk/img/pexels-gilbert-anthony-6220771.jpg" alt="happy woman" class="circle" />
+		</aside>
+		<p>음악 애호가 여러분, 올해의 아름다운 선율들을 따라가는 여정에 오신 것을 환영합니다! 네온 불빛이 환하게 빛나던 1980년대로 시간 여행을 떠나, 그 어떤 것과도 비교할 수 없는 음악적 폭발을 기대하세요. 화려한 개성과 획기적인 사운드로 가득했던 이 시대는 음악사에서 가장 잊을 수 없는 앨범들을 탄생시켰습니다. 자, 안전벨트를 매고 붐박스의 볼륨을 높이세요. 방송을 강타하고, 우리의 영혼을 전율시키며, 한 시대를 정의했던 최고의 앨범들을 만나보세요. 80년대를 음악적 천재들의 보고로 만든 중독성 있는 비트와 초월적인 멜로디에 맞춰 그루브를 타고, 록을 즐기고, 박진감 넘치는 리듬을 만끽하세요. 올해 최고의 앨범들을 통해 펼쳐지는 이 특별한 음악 여행에 여러분을 초대합니다!</p>
+		<ul>
+			<li>
+				<img src="https://assets.stoumann.dk/img/please.jpg" alt="Please" />
+				<div>
+					<h3>Please <span>Pet Shop Boys</span></h3>
+					<small>“Please” is an absolute banger, filled with rad synth-pop vibes, catchy tunes, and lyrics that speak to the desires and dreams of a generation ready to hit the dance floor and live life to the fullest.</small>
+				</div>
+			</li>
+			<li>
+				<img src="https://assets.stoumann.dk/img/blackcelebration.png" alt="Black Celebration" />
+				<div>
+					<h3>Black Celebration <span>Depeche Mode</span></h3>
+					<small>“Black Celebration” is an atmospheric masterpiece, immersing us in a world of brooding synths, deep lyrics, and a seductive darkness that captures the essence of the alternative scene.</small>
+				</div>
+			</li>
+		</ul>
+	</main>
+</body>
+
+</html>
