@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flowing Wave Circles</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #1a1a3b;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<canvas id="waveCanvas"></canvas>
+<script>
+  const canvas = document.getElementById("waveCanvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const circles = [];
+  const numCircles = 8; // 그룹의 수
+  const trailLength = 5; // 따라오는 원의 개수
+
+  // 원 그룹 초기화
+  for (let i = 0; i < numCircles; i++) {
+    circles.push({
+      x: Math.random() * canvas.width, // 시작 x 위치
+      y: Math.random() * canvas.height, // 시작 y 위치
+    //   radius: 10 + Math.random() * 10, // 원의 반지름
+      radius: 5, // 원의 반지름
+      speed: 1 + Math.random() * 1.5, // 오른쪽 이동 속도
+      waveSpeed: 0.05 + Math.random() * 0.03, // 상하 웨이브 속도
+      waveAmplitude: 20 + Math.random() * 20, // 웨이브 진폭
+      angle: Math.random() * Math.PI * 2, // 웨이브 초기 각도
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    circles.forEach((circle) => {
+      const trail = [];
+
+      // trail 생성
+      for (let i = 0; i < trailLength; i++) {
+        const offsetX = i * (circle.radius * 2); // trail 간격 = 원 지름
+        const offsetY = Math.sin(circle.angle - i * 0.5) * circle.waveAmplitude; // 웨이브 상하 이동
+        const alpha = Math.max(0.2, 1 - i * 0.2); // 투명도 감소
+
+        trail.push({ x: circle.x - offsetX, y: circle.y + offsetY, alpha });
+      }
+
+      // trail 그리기
+      trail.forEach((t, index) => {
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, circle.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(50, 150, 250, ${t.alpha})`;
+        ctx.fill();
+      });
+
+      // 원의 위치 갱신
+      circle.x += circle.speed; // 오른쪽으로 이동
+      circle.angle += circle.waveSpeed; // 웨이브 각도 증가
+
+      // 화면 끝으로 나가면 왼쪽에서 다시 시작
+      if (circle.x - circle.radius * trailLength > canvas.width) {
+        circle.x = -circle.radius * trailLength;
+        circle.y = Math.random() * canvas.height;
+        circle.speed = 1 + Math.random() * 1.5;
+        circle.waveAmplitude = 20 + Math.random() * 20;
+      }
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+
+  // 화면 크기 변경 대응
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>6 Waves with Sequential Sparkle</title>
+	</head>
+	<body>
+		<canvas id="canvas" width="800" height="600" style="border: 1px solid black"></canvas>
+
+		<script>
+			window.requestAnimFrame = (function (callback) {
+				return (
+					window.requestAnimationFrame ||
+					window.webkitRequestAnimationFrame ||
+					window.mozRequestAnimationFrame ||
+					window.oRequestAnimationFrame ||
+					window.msRequestAnimationFrame ||
+					function (callback) {
+						window.setTimeout(callback, 1000 / 60);
+					}
+				);
+			})();
+			window.cancelAnimFrame = (function () {
+				return (
+					window.cancelAnimationFrame ||
+					window.webkitCancelAnimationFrame ||
+					window.mozCancelAnimationFrame ||
+					window.oCancelAnimationFrame ||
+					function (id) {
+						window.clearTimeout(id);
+					}
+				);
+			})();
+			const canvas = document.getElementById('canvas');
+			const ctx = canvas.getContext('2d');
+
+			// Parameters for waves
+			const numWaves = 26; // Number of wave lines
+			const waves = []; // Store wave data
+			const staticDots = []; // Store fixed background dots
+			const amplitude = 50; // Wave amplitude
+			const frequency = 0.02; // Wave frequency
+			const step = 5; // Step between points
+			const radius = 3; // Radius of the dots
+			const ySpacing = 8; // Vertical spacing between waves
+			const yShift = 0.7; // Amount to shift the y-axis downward per step
+			const rangeSize = 20; // Number of dots to sparkle at a time
+			const waveDelays = Array.from({ length: numWaves }, () => Math.random() * 50 + 20); // Random delays for each wave
+			let waveIndices = Array(numWaves).fill(0); // Start indices for each wave's sparkle effect
+
+			// Initialize waves and static dots
+			for (let i = 0; i < numWaves; i++) {
+				const dots = [];
+				let offsetY = i * ySpacing + 100; // Vertical offset for each wave
+				for (let x = 0; x - 300 < canvas.width; x += step) {
+					const y = amplitude * Math.sin(frequency * x + (i * Math.PI) / 6) + offsetY;
+					dots.push({ x, y, brightness: 0 }); // Initialize brightness to 0
+					staticDots.push({ x, y, brightness: 0.2 }); // Store static dots for the background
+					offsetY += yShift; // Lower the wave gradually
+				}
+				waves.push(dots);
+			}
+
+			// Function to draw the waves
+			function drawWaves() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+
+				// Draw static background dots
+				staticDots.forEach((dot) => {
+					ctx.beginPath();
+					ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
+					ctx.fillStyle = `rgba(60, 120, 180, ${dot.brightness})`;
+					ctx.fill();
+					ctx.closePath();
+				});
+
+				// Draw animated waves with sparkling effect
+				waves.forEach((dots, waveIndex) => {
+					dots.forEach((dot, index) => {
+						// Set brightness for the sparkling range
+						if (index >= waveIndices[waveIndex] && index < waveIndices[waveIndex] + rangeSize) {
+							dot.brightness = 1; // Fully bright
+						} else {
+							dot.brightness = 0.2; // Dim for others
+						}
+
+						// Draw the dot
+						const color = `rgba(${30 + waveIndex * 40}, 128, 200, ${dot.brightness})`; // Different color for each wave
+						ctx.beginPath();
+						ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
+						ctx.fillStyle = color;
+						ctx.fill();
+						ctx.closePath();
+					});
+				});
+
+				// Move the sparkle range for each wave
+				waves.forEach((dots, waveIndex) => {
+					if (performance.now() % waveDelays[waveIndex] < 16) {
+						// Control sparkle update speed
+						waveIndices[waveIndex] = (waveIndices[waveIndex] + 1) % dots.length; // Loop back to the start
+					}
+				});
+
+				// requestAnimationFrame(drawWaves); // Continue animation
+				window.requestAnimFrame(function () {
+					// _this.render();
+					drawWaves();
+					date = new Date();
+					gameLoop(date);
+					//console.log(parent);
+				});
+			}
+			let fps = 0;
+			const interval = 500;
+			let lastTime=interval
+			function gameLoop(currentTime) {
+				const deltaTime = currentTime - lastTime;
+				// FPS 표시
+				if (deltaTime  >= interval) {
+					lastTime = currentTime;
+					fps = Math.round(1000 / (currentTime - oldTime));
+				}
+				oldTime = currentTime;
+				ctx.fillStyle = 'red';
+				ctx.font = '20px Arial';
+				ctx.fillText(`FPS: ${fps}`, 10, 30);
+			}
+			drawWaves();
+		</script>
+	</body>
+</html>

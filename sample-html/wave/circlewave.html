@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6 Waves with Sequential Sparkle</title>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="600" style="border: 1px solid black;"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Parameters for waves
+        const numWaves = 6; // Number of wave lines
+        const waves = []; // Store wave data
+        const amplitude = 50; // Wave amplitude
+        const frequency = 0.02; // Wave frequency
+        const step = 5; // Step between points
+        const radius = 3; // Radius of the dots
+        const ySpacing = 8; // Vertical spacing between waves
+        const yShift = 0.7; // Amount to shift the y-axis downward per step
+        const rangeSize = 6; // Number of dots to sparkle at a time
+        let currentIndex = 0; // Start index for the sparkle
+
+        // Initialize waves
+        for (let i = 0; i < numWaves; i++) {
+            const dots = [];
+            let offsetY = i * ySpacing + 100; // Vertical offset for each wave
+            for (let x = 0; x < canvas.width; x += step) {
+                const y = amplitude * Math.sin(frequency * x + i * Math.PI / 6) + offsetY;
+                dots.push({ x, y, brightness: 0 }); // Initialize brightness to 0
+                offsetY += yShift; // Lower the wave gradually
+            }
+            waves.push(dots);
+        }
+
+        // Function to draw the waves
+        function drawWaves() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+
+            waves.forEach((dots, waveIndex) => {
+                dots.forEach((dot, index) => {
+                    // Set brightness for the sparkling range
+                    if (index >= currentIndex && index < currentIndex + rangeSize) {
+                        // dot.brightness = 1; // Fully bright
+                    } else {
+                        dot.brightness = 0.2; // Dim for others
+                    }
+
+                    // Draw the dot
+                    const color = `rgba(${30 + waveIndex * 40}, 128, 200, ${dot.brightness})`; // Different color for each wave
+                    ctx.beginPath();
+                    ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                    ctx.closePath();
+                });
+            });
+
+            // Move the sparkle range
+            currentIndex = (currentIndex + 1) % waves[0].length; // Loop back to the start
+            requestAnimationFrame(drawWaves); // Continue animation
+        }
+
+        // Start the animation
+        drawWaves();
+    </script>
+</body>
+</html>

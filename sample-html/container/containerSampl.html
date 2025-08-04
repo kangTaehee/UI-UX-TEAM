@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			*{box-sizing: border-box;}
+			.container {
+				/* width: 100%; */
+				max-width: 800px;
+				padding: 20px;
+				container-type: inline-size;
+				container-name: main-container;
+			}
+			.content {
+				background-color: lightblue;
+				/* padding: 10px; */
+				/* width:60ch; */
+			}
+			/* 컨테이너 크기가 500px 이상일 때 스타일 적용 */
+			@container (min-width: 500px) {
+				.content {
+					/* background-color: lightgreen; */
+					/* padding: 20px; */
+				}
+			}
+
+			/* 컨테이너 크기가 700px 이상일 때 스타일 적용 */
+			@container (min-width: 800px) {
+				.content {
+					/* background-color: lightcoral; */
+					/* padding: 30px; */
+					/* font-size:40px; */
+				}
+			}
+			@container main-container (min-width: 800px) {
+				.content {
+					background-color: lightgreen;
+				}
+			}
+			@container main-container (inline-size > calc(30ch * 2 )) {
+				.content {
+					background-color: red;
+					
+				}
+			}
+		</style>
+	</head>
+	<body>
+		1
+		<div class="container">
+			<div class="content">
+				CSS의 ch 단위는 요소 글꼴에서 숫자 0의 너비를 기준으로 계산됩니다. 즉, 1ch는 현재 사용되는 글꼴에서 숫자 0의 너비와 동일한 길이를 나타냅니다.
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum architecto, ad soluta itaque eius est aut? Accusantium, suscipit voluptatem sint delectus magni harum aliquid, ab nam quibusdam repellendus assumenda quae!
+				<!-- 16*60=960 -->
+				<!-- 532.8/60=8.88 -->
+			</div>
+		</div>
+	</body>
+</html>

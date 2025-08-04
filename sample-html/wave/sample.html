@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="canvas" width="2500" height="2000"></canvas>
+	<script>	
+		const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+const numberOfCircles = 10; // 원의 개수
+const circleRadius = 4; // 원의 반지름
+const amplitude = 300; // 웨이브의 진폭
+const frequency = .02; // 웨이브의 빈도수
+const speed = 0.1; // 움직임 속도
+
+let circles = [];
+
+// 원 생성
+for (let i = 0; i < numberOfCircles; i++) {
+  circles.push({
+    x: i * (canvas.width / numberOfCircles),
+    y: canvas.height / 2,
+    initialY: canvas.height / 2,
+    phase: Math.random() * Math.PI * 2 // 각 원의 위상 (랜덤)
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // 캔버스 초기화
+
+  for (let i = 0; i < circles.length; i++) {
+    const circle = circles[i];
+
+    // 웨이브 계산
+    const waveOffset = Math.sin(circle.phase + Date.now() * frequency * speed) * amplitude;
+    circle.y = circle.initialY + waveOffset;
+	LEFT = 3
+    circle.x = circle.x + LEFT > canvas.width ? 0 : circle.x + LEFT;
+
+    // 원 그리기
+    ctx.beginPath();
+    ctx.arc(circle.x, circle.y, circleRadius, 0, Math.PI * 2);
+    ctx.fillStyle = 'blue'; // 원 색상
+    ctx.fill();
+  }
+
+  requestAnimationFrame(animate); // 애니메이션 프레임 요청
+}
+
+animate(); // 애니메이션 시작
+	</script>
+</body>
+</html>
