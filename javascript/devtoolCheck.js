@@ -1,26 +1,115 @@
-/**
- * 개발자 도구가 열려있는지 감지하는 함수
- * @returns {boolean} 개발자 도구가 열려있으면 true, 아니면 false
- */
-function isDevToolsOpen() {
-  const threshold = 160; // 개발자 도구의 최소 높이 또는 너비 임계값 (픽셀)
+<!DOCTYPE html>
+<html lang="ko">
 
-  // 개발자 도구 창이 열렸을 때, 윈도우 크기 변화 감지
-  // 윈도우 크기 변화가 감지되지 않으면, 더 복잡한 방법으로 감지
-  if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
-    return true;
-  }
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
 
-  // 더 정교한 방법 (디버거 사용)
-  // 이 방법은 개발자 도구의 '디버거' 탭이 활성화되어 있어야 동작합니다.
-  let isOpened = false;
-  const devtools = /./;
-  devtools.toString = function() {
-    isOpened = true;
-  };
-  console.log('%c', devtools);
-  return isOpened;
-}
+<body>
+	<script>
+		// DevToolsWatcher: DevTools 열림/닫힘 감지 + 콜백 실행
+		// - 절대 임계 + 베이스라인 변화량을 병행해 오탐을 줄임
+		// - resize 디바운스 + 주기 샘플링
+		const DevToolsWatcher = (() => {
+			const ABS_THRESHOLD = 150;   // 절대 픽셀 임계치
+			const DELTA_FACTOR = 0.6;    // 베이스라인 대비 증가 허용 비율
+			const DEBOUNCE_MS = 80;     // resize 디바운스
+			const TICK_MS = 1000;   // 주기 샘플링(1초)
 
-// 사용 예시
-console.log('개발자 도구 열림 여부:', isDevToolsOpen());
+			let baseline = null;         // { wGap, hGap }
+			let open = false;
+			let started = false;
+			let resizeTimer = null;
+			let intervalId = null;
+
+			const openListeners = new Set();
+			const closeListeners = new Set();
+			const changeListeners = new Set();
+
+			const measure = () => {
+				// 일부 환경(모바일/팝업 등)에서 outer가 0인 경우 방어
+				const ow = window.outerWidth || 0;
+				const oh = window.outerHeight || 0;
+				const iw = window.innerWidth;
+				const ih = window.innerHeight;
+				const wGap = Math.max(0, ow - iw);
+				const hGap = Math.max(0, oh - ih);
+				return { ow, oh, iw, ih, wGap, hGap };
+			};
+
+			const decide = (m) => {
+				if (!baseline) baseline = { wGap: m.wGap, hGap: m.hGap };
+				const absOpen = (m.wGap > ABS_THRESHOLD) || (m.hGap > ABS_THRESHOLD);
+				const deltaOpen =
+					(m.wGap - baseline.wGap) > ABS_THRESHOLD * DELTA_FACTOR ||
+					(m.hGap - baseline.hGap) > ABS_THRESHOLD * DELTA_FACTOR;
+				return absOpen || deltaOpen;
+			};
+
+			const update = () => {
+				const m = measure();
+				const next = decide(m);
+				if (next !== open) {
+					open = next;
+					changeListeners.forEach(fn => fn(open, m));
+					(open ? openListeners : closeListeners).forEach(fn => fn(m));
+				}
+				return open;
+			};
+
+			const onOpen = (fn) => { openListeners.add(fn); return () => openListeners.delete(fn); };
+			const onClose = (fn) => { closeListeners.add(fn); return () => closeListeners.delete(fn); };
+			const onChange = (fn) => { changeListeners.add(fn); return () => changeListeners.delete(fn); };
+
+			const start = () => {
+				if (started) return;
+				started = true;
+				// 초기 평가
+				update();
+
+				// resize + 디바운스
+				window.addEventListener('resize', onResize, { passive: true });
+				// 탭 복귀 시 재평가
+				document.addEventListener('visibilitychange', onVisible, { passive: true });
+				// 주기 샘플링
+				intervalId = setInterval(update, TICK_MS);
+			};
+
+			const stop = () => {
+				if (!started) return;
+				started = false;
+				window.removeEventListener('resize', onResize);
+				document.removeEventListener('visibilitychange', onVisible);
+				clearInterval(intervalId);
+				clearTimeout(resizeTimer);
+				intervalId = null;
+				resizeTimer = null;
+			};
+
+			const onResize = () => {
+				clearTimeout(resizeTimer);
+				resizeTimer = setTimeout(update, DEBOUNCE_MS);
+			};
+			const onVisible = () => { if (!document.hidden) setTimeout(update, 0); };
+
+			const isOpen = () => open;
+
+			return { start, stop, isOpen, onOpen, onClose, onChange };
+		})();</script>
+	<script>
+		DevToolsWatcher.onOpen(() => {
+			document.body.style.filter = 'blur(4px)';
+			// 안내 배너 노출 등
+			console.warn('개발자 도구가 감지되어 화면을 보호 중입니다.');
+		});
+		DevToolsWatcher.onClose(() => {
+			document.body.style.filter = '';
+		});
+		DevToolsWatcher.start();
+	</script>
+	Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed veritatis nam harum sunt totam non illum necessitatibus quidem error quo ipsa officia, aliquam dignissimos recusandae iure a facere alias repudiandae!
+</body>
+
+</html>
